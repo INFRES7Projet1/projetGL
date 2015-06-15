@@ -1,0 +1,46 @@
+##JUnit 
+
+framework pour dev et automatisation de tests unitaires (de non reg).
+Principe de base : s'assurer que le code répond toujours aux besoins même après d'éventuelles modifs.
+Classes qui contiennent des cas de tests, Junit les exécute et les comparent avec ces résultats.
+Permet  de séparer le code de la classe, du code qui test.
+
+
+##WindowsBuilder Editor 
+#Installation : 
+ - Help -> Install New Software.., Selectionnez All site available, renseigner WindowBuilder, ddl les modules.
+ ou 
+ - http://download.eclipse.org/windowbuilder/WB/release/R201406251200/4.2/ (lien à renseigner dans eclipse ainsi que tuto..)
+
+#Utilisation :
+ Clic droit sur la classe, Open With > WindowsBuilder Editor 
+ 
+ 
+##Maven : outil pour la gestion et l'automatisation de production des projets logiciel Java. Maven a été conçu pour déléguer la responsabilité du build à un ensemble de plugins Maven.
+			    http://maven-guide-fr.erwan-alliaume.com/maven-guide-fr/site/reference/introduction.html
+#DDL :    http://maven.apache.org/download.cgi			
+#Installation Maven : http://maven-guide-fr.erwan-alliaume.com/maven-guide-fr/site/reference/installation-sect-windows.html
+				              http://www-igm.univ-mlv.fr/~dr/XPOSE2004/maven/Maven_Intro.htm
+				              http://blog.soat.fr/2011/06/maven-pour-les-nuls-les-archetypes/
+
+#cycle de vie maven : http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
+#Organisation des fichiers : 
+  code source : /src/main/java
+  differentes ressources (images..) : /src/main/resources
+  tests : /src/test
+   -> projet produit un fichier JAR, JAR distribuable : /target
+  bytecode à compiler /target/classes
+ 
+
+##Git :	https://github.com/OneBusAway/onebusaway/wiki/Importing-source-code-into-Eclipse
+		    https://wiki.eclipse.org/EGit/User_Guide#GitHub_Tutorial
+		    http://christopheducamp.com/2013/12/15/github-pour-nuls-partie-1/
+
+ 
+ #Plugins nécessaires :
+
+ eGit -> http://www.eclipse.org/egit/
+ m2 -> http://www.eclipse.org/m2e/
+
+ 
+ ##SVN : on utilise Git plutot !!
