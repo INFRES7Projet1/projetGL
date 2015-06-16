@@ -89,4 +89,5 @@ public class EscrimDAO {
 	private static String _pwd = "EscrimPassword";
 	
 	private static String _getAllColis = "SELECT * FROM colis;";
-}
+
+}//EscrimDAO
