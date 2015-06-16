@@ -1,3 +1,4 @@
+package com.projetGL.model;
 import java.sql.*;
 
 public class EscrimDAO {
@@ -71,9 +72,7 @@ public class EscrimDAO {
 			    System.out.println("VendorError: " + ex.getErrorCode());
 			
 			}
-			System.out.println("Connexion effective !");       
-
-		
+			System.out.println("Connexion effective !");       	
 	}
 	
 	private void Disconnect(){
