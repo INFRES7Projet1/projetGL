@@ -19,12 +19,12 @@ public class Fenetre {
 	 */
 	public static void main(String[] args) {
 		
-		//Application du thème Nimbus.
+		//Application du thï¿½me Nimbus.
 	try {
 		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 		        if ("Nimbus".equals(info.getName())) {
 		            UIManager.setLookAndFeel(info.getClassName());
-		            System.out.println("Thème appliqué.\n");
+		            System.out.println("Thï¿½me appliquï¿½.\n");
 		            break;
 		        }
 		    }
@@ -42,7 +42,7 @@ public class Fenetre {
 				try {
 					EscrimDAO database = new EscrimDAO();
 					System.out.println(database.GetAllColis());
-					
+					// DB
 					Fenetre window = new Fenetre();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
