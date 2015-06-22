@@ -28,6 +28,12 @@ public class Colis {
 	// Etat courant du colis
 	public Status Etat;
 	
+	// Option du colis
+	public OptionColis Option;
+	
+	// Option du colis
+	public TypeColis Type;
+	
 	// Liste des mEdicaments contenus dans le colis
 	public List<Medicament> ListeMedicaments;
 	
@@ -38,6 +44,7 @@ public class Colis {
 	public List<Objet> ListeObjets;
 	
 	//endregion properties
+	
 	
 	// region Constructor
 	
@@ -52,16 +59,30 @@ public class Colis {
 	}
 	
 	// Constructeur initialisant toute ses données membres
-	public Colis(int id, String designation, Status etat, int poids, String affectataire)
+	public Colis(int id, String designation, Status etat, int poids, String affectataire, OptionColis option, TypeColis type, List<Medicament> listeMedicaments, List<Outil> listeOutils, List<Objet> listeObjets)
 	{ 
 		Id = id;
 		Designation = designation;
 		Etat = etat;
 		Poids = poids;
 		Affectataire = affectataire;
+		Option = option;
+		Type = type;
+		ListeMedicaments = listeMedicaments; 
+		ListeOutils = listeOutils;
+		ListeObjets = listeObjets;
 	}
 	
 	// endregion Constructor
+	
+	
+	// region public methods
+	
+	public String toString(){
+		return "Colis : " + Id + ", " + Designation + "," + Etat + "," + Poids + "," + Affectataire ; // TODO
+	};
+	
+	// endregion public methods
 	
 	
 }

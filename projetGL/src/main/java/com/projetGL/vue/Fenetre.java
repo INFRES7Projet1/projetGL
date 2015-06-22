@@ -1,13 +1,14 @@
 package com.projetGL.vue;
 
 import java.awt.EventQueue;
+import java.util.*;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import com.projetGL.model.EscrimDAO;
+import com.projetGL.model.*;
 
 
 public class Fenetre {
@@ -41,7 +42,13 @@ public class Fenetre {
 			public void run() {
 				try {
 					EscrimDAO database = new EscrimDAO();
-					System.out.println(database.GetAllColis());
+					
+					List<Colis> res = database.GetAllColis();
+					
+					for(Colis col : res){
+						System.out.println(col.toString());
+					}
+					
 					// DB
 					Fenetre window = new Fenetre();
 					window.frame.setVisible(true);

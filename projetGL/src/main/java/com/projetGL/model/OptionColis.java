@@ -1,6 +1,6 @@
 package com.projetGL.model;
 
-public class ClasseTherapeutique {
+public class OptionColis {
 	
 	// region properties
 	
@@ -13,15 +13,11 @@ public class ClasseTherapeutique {
 	
 	// region Constructors
 	
-	public ClasseTherapeutique(){
-		
-	}
+	public OptionColis(){}
 	
-	public ClasseTherapeutique(int id){
-		Id = id;
-	}
+	public OptionColis(int id){}
 	
-	public ClasseTherapeutique(int id, String designation){
+	public OptionColis(int id, String designation){
 		Id = id;
 		Designation = designation;
 	}

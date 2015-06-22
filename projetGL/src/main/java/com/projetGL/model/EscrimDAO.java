@@ -1,5 +1,6 @@
 package com.projetGL.model;
 import java.sql.*;
+import java.util.*;
 
 public class EscrimDAO {
 
@@ -17,44 +18,48 @@ public class EscrimDAO {
 		}
 	}
 	
-	public String[] GetAllColis(){
+	public List<Colis> GetAllColis(){
 		Connect();
-		String[] results = new String[10];
-		/* Création de l'objet gérant les requêtes */
+		
+		List<Colis> result = new ArrayList<Colis>();
+		
+		/* Crï¿½ation de l'objet gï¿½rant les requï¿½tes */
 		try {
 			Statement statement = connexion.createStatement();
 			ResultSet resultat = statement.executeQuery( _getAllColis );
 			
-			/* Récupération des données du résultat de la requête de lecture */
+			/* Rï¿½cupï¿½ration des donnï¿½es du rï¿½sultat de la requï¿½te de lecture */
 			
 			int i = 0; 
 			while ( resultat.next() ) {
-			    int idColis = resultat.getInt( "colis_Id" );
-			    String designation = resultat.getString( "designation" );
-			    String etat = resultat.getString( "etat" );
-			    int poids = resultat.getInt( "poids" );
-			    String affectataire = resultat.getString( "affectataire" );
-			    String option_Id = resultat.getString( "options_Id" );
-			    String typeColis_Id = resultat.getString( "typeColis_Id" );
+				
+			    // Insertion des valeurs rÃ©cupÃ©rÃ©es dans la BDD
+			    Colis colis = new Colis(resultat.getInt( "colis_Id" ));
 			    
-			    results[i] =  idColis + ", "+ designation + ", " + etat + ", " + poids + ", " + affectataire+ ", " + option_Id+ ", " + typeColis_Id;
+			    // Si etat = "Demi-Plein", on formate le string pour qu'il corresponde Ã  la valeur d'enumÃ©ration
+			    colis.Etat = Colis.Status.valueOf((resultat.getString( "etat" ) == "Demi-Plein" ? "DemiPlein" : resultat.getString( "etat" )));
+			    colis.Poids = resultat.getInt( "poids" );
+			    colis.Designation = resultat.getString( "designation" );
+			    colis.Affectataire = resultat.getString( "affectataire" );
 			    
-			    System.out.println(results[i]);
-			    /* Traiter ici les valeurs récupérées. */
+			    colis.Type = new TypeColis(resultat.getInt( "typeColis_Id" ));
+			    colis.Option = new OptionColis(resultat.getInt( "options_Id" ));
+			    			    
+			    result.add(i, colis);
 			    i++;
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return results;
+		return result;
 	}
 	
 	private void Connect(){
 			
 			System.out.println("Driver O.K.");
 	
-			/* Connexion à la base de données */
+			/* Connexion ï¿½ la base de donnï¿½es */
 			String url = "jdbc:mysql://127.0.0.1:3306/db_escrim";
 			String utilisateur = "EscrimUser";
 			String motDePasse = "EscrimPassword";
@@ -62,11 +67,11 @@ public class EscrimDAO {
 			try {
 			    connexion = DriverManager.getConnection( url, utilisateur, motDePasse );
 			    System.out.println("It works");
-			    /* Ici, nous placerons nos requêtes vers la BDD */
+			    /* Ici, nous placerons nos requï¿½tes vers la BDD */
 			    /* ... */
 
 			} catch ( SQLException ex ) {
-			    /* Gérer les éventuelles erreurs ici */
+			    /* Gï¿½rer les ï¿½ventuelles erreurs ici */
 			    System.out.println("SQLException: " + ex.getMessage());
 			    System.out.println("SQLState: " + ex.getSQLState());
 			    System.out.println("VendorError: " + ex.getErrorCode());
@@ -88,6 +93,7 @@ public class EscrimDAO {
 	// Password of mysql server
 	private static String _pwd = "EscrimPassword";
 	
+	// Select Queries
 	private static String _getAllColis = "SELECT * FROM colis;";
 
 }//EscrimDAO
