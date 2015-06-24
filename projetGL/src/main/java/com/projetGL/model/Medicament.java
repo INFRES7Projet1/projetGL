@@ -7,11 +7,13 @@ public class Medicament {
 	
 	public int Id;
 	
-	public int quantite;
+	public String Produit;
+	
+	public int Quantite;
 	
 	public String FormeDosage;
 	
-	public String lot;
+	public String Lot;
 	
 	public Date Dlu;
 	
@@ -33,4 +35,10 @@ public class Medicament {
 	}
 	
 	// endregion Constructors
+	
+	// function public
+	
+	public String toString(){
+		return "Medicament : " + Id + ", " + Produit + "," + Quantite + "," + FormeDosage + "," + Lot + "," + Dlu + "," + Dotation + "," + Dci.toString() ; // TODO
+	};
 }

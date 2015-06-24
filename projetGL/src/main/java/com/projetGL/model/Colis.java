@@ -1,5 +1,6 @@
 package com.projetGL.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Colis {
@@ -7,8 +8,8 @@ public class Colis {
 	// Différents états possible du colis
 	public enum Status {
 		vide,
-		Demi_Plein,
-		Plein
+		demi_plein,
+		plein
 	}
 	
 	//Region properties
@@ -50,12 +51,19 @@ public class Colis {
 	
 	// Constructeur par defauts
 	public Colis()
-	{ }
+	{ 
+		ListeMedicaments = new ArrayList<Medicament>(); 
+		ListeOutils = new ArrayList<Outil>();
+		ListeObjets = new ArrayList<Objet>();
+	}
 	
 	//Constructeur prenant juste son id
 	public Colis(int id)
 	{ 
 		Id = id;
+		ListeMedicaments = new ArrayList<Medicament>(); 
+		ListeOutils = new ArrayList<Outil>();
+		ListeObjets = new ArrayList<Objet>();
 	}
 	
 	// Constructeur initialisant toute ses données membres
@@ -79,7 +87,31 @@ public class Colis {
 	// region public methods
 	
 	public String toString(){
-		return "Colis : " + Id + ", " + Designation + "," + Etat + "," + Poids + "," + Affectataire ; // TODO
+		String ret = "Colis : " + Id + ", " + Designation + "," + Etat + "," + Poids + "," + Affectataire + "\n";
+		
+		if(ListeMedicaments != null){
+			
+			for(Medicament med : ListeMedicaments){
+				ret += med.toString();
+				ret += "\n";
+			}
+		}
+		
+		if(ListeOutils != null){
+			for(Outil outil : ListeOutils){
+				ret += outil.toString();
+				ret += "\n";
+			}
+		}
+		
+		if(ListeObjets != null){
+			for(Objet obj : ListeObjets){
+				ret += obj.toString();
+				ret += "\n";
+			}
+		}
+		
+		return ret; // TODO
 	};
 	
 	// endregion public methods

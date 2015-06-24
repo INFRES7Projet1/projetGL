@@ -37,4 +37,9 @@ public class DCI {
 	}
 	
 	// endregion Constructors
+	
+	//Public methods
+	public String toString(){
+		return "( Dci : " + Id + ", " + Designation + "," + ClasseT.toString() + ")";
+	};
 }

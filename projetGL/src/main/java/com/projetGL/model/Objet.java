@@ -32,4 +32,9 @@ public class Objet {
 		Designation = designation;
 		SecteurUtilisation = sec;
 	}
+	
+	// public methods
+	public String toString(){
+		return "Objet : " + Id + ", " + Designation;
+	};
 }

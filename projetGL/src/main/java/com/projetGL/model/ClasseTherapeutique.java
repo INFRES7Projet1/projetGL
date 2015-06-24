@@ -27,4 +27,8 @@ public class ClasseTherapeutique {
 	}
 	
 	// endregion Constructors
+	
+	public String toString(){
+		return "( ClasseT : " + Id + ", " + Designation + ")";
+	};
 }

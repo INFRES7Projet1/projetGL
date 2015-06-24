@@ -44,10 +44,10 @@ public class Fenetre {
 					EscrimDAO database = new EscrimDAO();
 					
 					List<Colis> res = database.GetAllColis();
-					
 					for(Colis col : res){
 						System.out.println(col.toString());
 					}
+					
 					
 					// DB
 					Fenetre window = new Fenetre();
