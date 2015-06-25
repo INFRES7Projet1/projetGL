@@ -43,11 +43,18 @@ public class Fenetre {
 				try {
 					EscrimDAO database = new EscrimDAO();
 					
-					List<Colis> res = database.GetAllColis();
+					/*List<Colis> res = database.GetAllColis();
 					for(Colis col : res){
 						System.out.println(col.toString());
-					}
+					}*/
 					
+					/*ConfigurationColis conf = database.GetConfigurationContent(1);
+					System.out.println(conf.toString());*/
+					
+					List<ConfigurationColis> res = database.GetAllConfiguration();
+					for(ConfigurationColis config : res){
+						System.out.println(config.toString());
+					}
 					
 					// DB
 					Fenetre window = new Fenetre();

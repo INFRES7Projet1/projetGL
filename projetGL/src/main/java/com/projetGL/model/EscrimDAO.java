@@ -19,6 +19,125 @@ public class EscrimDAO {
 		}
 	}
 	
+	public List<ConfigurationColis> GetListeConfiguration(){
+		Connect();
+		
+		List<ConfigurationColis> result = new ArrayList<ConfigurationColis>();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_getListeConfiguration);
+			
+			ResultSet resultat = statement.executeQuery();
+			
+			int i = 0; 
+			while ( resultat.next() ) {
+				
+				ConfigurationColis conf = new ConfigurationColis(resultat.getInt("config_Id"));
+				
+				conf.Designation = resultat.getString("config_Designation");
+				    
+			    result.add(conf.Id, conf);
+			    i++;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public ConfigurationColis GetConfigurationContent(int conf_id)
+	{
+		ConfigurationColis result = null;
+		
+		try {
+			Connect();
+			PreparedStatement statement = connexion.prepareStatement(_getConfigurationContent);
+			statement.setInt(1, conf_id);
+			ResultSet resultat = statement.executeQuery();
+			
+			
+			int i = 0; 
+			while ( resultat.next() ) {
+				if ( result == null) {
+					result = new ConfigurationColis(resultat.getInt("config_Id"));
+					result.Designation = resultat.getString("config_Designation");
+					result.ListeColis = new ArrayList<Colis>();
+				}
+				result.ListeColis.add(i, GetColisContent(resultat.getInt("colis_Id")));
+			    i++;
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public List<ConfigurationColis> GetAllConfiguration()
+	{
+		List<ConfigurationColis> result = GetListeConfiguration();
+		
+		//int i=0;
+		for(ConfigurationColis conf : result){
+			ConfigurationColis c = GetConfigurationContent(conf.Id);
+			
+			if (c != null){
+				result.set( conf.Id, c);
+				//i++;
+			}
+		}
+		
+		return result;
+	}
+	
+	
+	public Colis GetColisContent(int colis_id){
+		
+		Colis result = null;
+		
+		try {
+			Connect();
+			PreparedStatement statement = connexion.prepareStatement(_getColis);
+			statement.setInt(1, colis_id);
+			ResultSet resultat = statement.executeQuery();
+			
+			if (resultat.next())
+			{
+				
+			    // Insertion des valeurs récupérées dans la BDD
+				result = new Colis(colis_id);
+			    
+			    // Si etat = "Demi-Plein", on formate le string pour qu'il corresponde à la valeur d'enumération
+				result.Etat = Colis.Status.valueOf((resultat.getString( "etat" ) == "Demi-Plein" ? "DemiPlein" : resultat.getString( "etat" )));
+				result.Poids = resultat.getInt( "poids" );
+				result.Designation = resultat.getString( "designation" );
+				result.Affectataire = resultat.getString( "affectataire" );
+			    
+				result.Type = new TypeColis(resultat.getInt( "typeColis_Id" ));
+				result.Option = new OptionColis(resultat.getInt( "options_Id" ));
+			    
+				result.ListeMedicaments = GetMedicamentInColis(result.Id);
+			    if (result.ListeMedicaments.isEmpty())
+			    	result.ListeMedicaments = null;
+			    
+			    result.ListeOutils = GetOutilsInColis(result.Id);
+			    if (result.ListeOutils.isEmpty())
+			    	result.ListeOutils= null;
+			    
+			    result.ListeObjets =  GetObjetsInColis(result.Id);
+			    if (result.ListeObjets.isEmpty())
+			    	result.ListeObjets= null;
+			    
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 	public List<Colis> GetAllColis(){
 		Connect();
 		
@@ -33,33 +152,13 @@ public class EscrimDAO {
 			
 			int i = 0; 
 			while ( resultat.next() ) {
-				
 			    // Insertion des valeurs récupérées dans la BDD
-			    Colis colis = new Colis(resultat.getInt( "colis_Id" ));
+			    Colis colis = GetColisContent(resultat.getInt( "colis_Id" ));
 			    
-			    // Si etat = "Demi-Plein", on formate le string pour qu'il corresponde à la valeur d'enumération
-			    colis.Etat = Colis.Status.valueOf((resultat.getString( "etat" ) == "Demi-Plein" ? "DemiPlein" : resultat.getString( "etat" )));
-			    colis.Poids = resultat.getInt( "poids" );
-			    colis.Designation = resultat.getString( "designation" );
-			    colis.Affectataire = resultat.getString( "affectataire" );
-			    
-			    colis.Type = new TypeColis(resultat.getInt( "typeColis_Id" ));
-			    colis.Option = new OptionColis(resultat.getInt( "options_Id" ));
-			    
-			    colis.ListeMedicaments = GetMedicamentInColis(colis.Id);
-			    if (colis.ListeMedicaments.isEmpty())
-			    	colis.ListeMedicaments = null;
-			    
-			    colis.ListeOutils = GetOutilsInColis(colis.Id);
-			    if (colis.ListeOutils.isEmpty())
-			    	colis.ListeOutils= null;
-			    
-			    colis.ListeObjets =  GetObjetsInColis(colis.Id);
-			    if (colis.ListeObjets.isEmpty())
-			    	colis.ListeObjets= null;
-			    
-			    result.add(i, colis);
-			    i++;
+			    if(colis != null){
+			    	result.add(i, colis);
+			    	i++;
+			    }
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -220,11 +319,15 @@ public class EscrimDAO {
 	// Select Queries
 	
 	// Colis
-	private static String _getAllColis = "SELECT * FROM colis;";
-	
+	private static String _getAllColis = "SELECT colis_Id FROM colis;";
+	private static String _getColis = "SELECT * FROM colis WHERE colis_Id = ?";
 	private static String _getMedicamentInColis = "SELECT colis_Id, M.medicament_Id, produit, quantite, forme_dosage, lot, dlu, dotation, D.dci_Id, D.dci_Designation, CT.therapeutique_Id, CT.therapeutique_Designation FROM medicament M, medicament_colis MC, dci D, classe_therapeutique CT WHERE M.medicament_Id = MC.medicament_Id AND D.dci_Id = M.dci_Id AND D.therapeutique_Id = CT.therapeutique_Id AND colis_Id = ?";
 	private static String _getOutilsInColis = "SELECT colis_Id, O.outil_Id, outil_Designation, quantite, dlu, reference FROM outil O, outil_colis OC WHERE O.outil_Id = OC.outil_Id AND colis_Id = ?";
 	private static String _getObjetsInColis = "SELECT colis_Id, O.objet_Id, objet_Designation FROM objet O, objet_colis OC WHERE O.objet_Id = OC.objet_Id AND colis_Id = ?";
+	
+	// Configuration
+	private static String _getListeConfiguration = "SELECT * FROM configuration;";
+	private static String _getConfigurationContent = "SELECT CC.config_Id, CO.config_Designation, C.colis_Id FROM configuration CO, configuration_colis CC, colis C WHERE CC.colis_Id = C.colis_Id AND CO.config_Id = CC.config_Id AND CC.config_Id = ?;";
 	// 
 
 }//EscrimDAO

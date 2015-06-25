@@ -36,5 +36,20 @@ public class ConfigurationColis {
 	
 	// endregion Constructors
 	
+	// region public methods
+	
+	public String toString(){
+		String ret = "ConfigurationColis : " + Id + ", " + Designation + "\n";
+		
+		if(ListeColis != null){
+			
+			for(Colis col : ListeColis){
+				ret += col.toString();
+				ret += "\n";
+			}
+		}
+		
+		return ret; 
+	};
 	
 }
