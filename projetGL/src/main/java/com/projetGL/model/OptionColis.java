@@ -15,7 +15,9 @@ public class OptionColis {
 	
 	public OptionColis(){}
 	
-	public OptionColis(int id){}
+	public OptionColis(int id){
+		Id =id;
+	}
 	
 	public OptionColis(int id, String designation){
 		Id = id;
@@ -23,4 +25,10 @@ public class OptionColis {
 	}
 	
 	// endregion Constructors
+	
+	// region public methods
+	
+	public String toString(){
+		return "( Option : " + Id + ", " + Designation + ")";
+	};
 }

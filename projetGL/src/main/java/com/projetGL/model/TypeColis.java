@@ -38,6 +38,10 @@ public class TypeColis {
 	
 	// region public Function
 	
+	public String toString(){
+		return "(Type Colis : " + Id + ", " + Designation + ", " + GetDimension() + ")";
+	}
+	
 	public String GetDimension(){
 		return  Longueur + "x" + Largeur + "x" + Hauteur ;
 	}

@@ -87,7 +87,7 @@ public class Colis {
 	// region public methods
 	
 	public String toString(){
-		String ret = "Colis : " + Id + ", " + Designation + "," + Etat + "," + Poids + "," + Affectataire + "\n";
+		String ret = "Colis : " + Id + ", " + Designation + ", " + Etat + ", " + Poids + ", " + Affectataire + ", " + Option.toString() + ", " + Type.toString() +"\n";
 		
 		if(ListeMedicaments != null){
 			

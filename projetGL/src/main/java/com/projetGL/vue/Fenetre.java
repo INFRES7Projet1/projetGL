@@ -56,6 +56,31 @@ public class Fenetre {
 						System.out.println(config.toString());
 					}
 					
+					List<OptionColis> l = database.GetListeOptions();
+					for(OptionColis opt : l){
+						System.out.println(opt.toString());
+					}
+					
+					List<Medicament> lm = database.GetListeMedicaments();
+					for(Medicament med : lm){
+						System.out.println(med.toString());
+					}
+					
+					List<Objet> lo = database.GetListeObjets();
+					for(Objet ob : lo){
+						System.out.println(ob.toString());
+					}
+					
+					List<Outil> lou = database.GetListeOutils();
+					for(Outil ou : lou){
+						System.out.println(ou.toString());
+					}
+					
+					List<TypeColis> ltc = database.GetListeTypeColis();
+					for(TypeColis tc : ltc){
+						System.out.println(tc.toString());
+					}
+					
 					// DB
 					Fenetre window = new Fenetre();
 					window.frame.setVisible(true);

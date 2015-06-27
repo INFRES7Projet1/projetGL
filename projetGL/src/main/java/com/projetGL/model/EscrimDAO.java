@@ -7,6 +7,7 @@ public class EscrimDAO {
 
 	Connection connexion = null;
 	
+	//Constructeur
 	public EscrimDAO(){
 		/* Chargement du driver JDBC pour MySQL */
 		try
@@ -19,24 +20,86 @@ public class EscrimDAO {
 		}
 	}
 	
-	public List<ConfigurationColis> GetListeConfiguration(){
-		Connect();
-		
-		List<ConfigurationColis> result = new ArrayList<ConfigurationColis>();
+	public List<TypeColis> GetListeTypeColis(){
+		List<TypeColis> result = new ArrayList<TypeColis>();
 		
 		try {
-			PreparedStatement statement = connexion.prepareStatement(_getListeConfiguration);
+			PreparedStatement statement = connexion.prepareStatement(_getListeTypeColis);
 			
 			ResultSet resultat = statement.executeQuery();
 			
-			int i = 0; 
-			while ( resultat.next() ) {
+			int i = 0;
+			while(resultat.next()){
+			
+				TypeColis tc = new TypeColis(resultat.getInt("typeColis_Id"));
+				tc.Designation = resultat.getString("typeColis_Designation");
+				tc.Hauteur = resultat.getInt("hauteur");
+				tc.Largeur = resultat.getInt("largeur");
+				tc.Longueur = resultat.getInt("longueur");
 				
-				ConfigurationColis conf = new ConfigurationColis(resultat.getInt("config_Id"));
+				result.add(i, tc);
+				i++;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	// Retourne la liste des Options
+	public List<OptionColis> GetListeOptions(){
+		List<OptionColis> result = new ArrayList<OptionColis>();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_getListeOptions);
+			ResultSet resultat = statement.executeQuery();
+			
+			int i = 0;
+			while(resultat.next()){
+				OptionColis opt = new OptionColis(resultat.getInt("options_Id"),  resultat.getString("options_Designation"));
+				result.add(i, opt);
+				i++;
+			}			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	// Retourne la liste des Medicaments
+	public List<Medicament> GetListeMedicaments(){
+		List<Medicament> result = new ArrayList<Medicament>();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_getListeMedicament);
+			ResultSet resultat = statement.executeQuery();
+			
+			int i = 0;
+			while(resultat.next()){
 				
-				conf.Designation = resultat.getString("config_Designation");
-				    
-			    result.add(conf.Id, conf);
+				// Insertion de la classe therapeutique à laquelle appartient le médicament
+				ClasseTherapeutique ct = new ClasseTherapeutique(resultat.getInt("therapeutique_Id"));
+			    ct.Designation = resultat.getString("therapeutique_Designation");
+				
+			    // Insertion du DCI à laquelle appartient le médicament
+			    DCI dci = new DCI(resultat.getShort("dci_id"));
+			    dci.Designation = resultat.getString("dci_Designation");
+			    dci.ClasseT = ct;
+			    
+			    // Insertion des valeurs récupérées dans la BDD lié au médicament
+			    Medicament medicament = new Medicament(resultat.getInt( "medicament_Id"));
+			  
+			    medicament.Produit = resultat.getString("produit");
+			    medicament.Quantite = resultat.getInt("quantite");
+			    medicament.FormeDosage = resultat.getString("forme_dosage");
+			    medicament.Lot = resultat.getString("lot");
+			    medicament.Dlu = resultat.getDate("dlu");
+			    medicament.Dotation = resultat.getString("dotation");
+			    medicament.Dci = dci;
+			    
+			    result.add(i, medicament);
 			    i++;
 			}
 		} catch (SQLException e) {
@@ -46,6 +109,84 @@ public class EscrimDAO {
 		return result;
 	}
 	
+	//Retourne la liste des Outils
+	public List<Outil> GetListeOutils(){
+		Connect();
+		
+		List<Outil> result = new ArrayList<Outil>();
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_getListeOutils);
+			ResultSet resultat = statement.executeQuery();
+			
+			int i = 0; 
+			while ( resultat.next() ) {
+				
+				Outil outil = new Outil(resultat.getInt("outil_Id"));
+				outil.Designation = resultat.getString("outil_Designation");
+				outil.Quantite = resultat.getShort("quantite");
+				outil.Dlu = resultat.getDate("dlu");
+				outil.Reference = resultat.getString("reference");
+			    
+			    result.add(i, outil);
+			    i++;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	//Retourne la liste des Objets
+	public List<Objet> GetListeObjets(){
+		Connect();
+		
+		List<Objet> result = new ArrayList<Objet>();
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_getListeObjets);
+			ResultSet resultat = statement.executeQuery();
+			
+			int i = 0; 
+			while ( resultat.next() ) {
+				Objet obj = new Objet(resultat.getInt("objet_Id"));
+				obj.Designation = resultat.getString("objet_Designation");
+				    
+			    result.add(i, obj);
+			    i++;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	// Retourne la liste des configurations sans les colis
+	public List<ConfigurationColis> GetListeConfiguration(){
+
+		Connect();
+		
+		List<ConfigurationColis> result = new ArrayList<ConfigurationColis>();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_getListeConfiguration);
+			
+			ResultSet resultat = statement.executeQuery();
+			
+			while ( resultat.next() ) {
+				ConfigurationColis conf = new ConfigurationColis(resultat.getInt("config_Id"));
+				conf.Designation = resultat.getString("config_Designation");
+				    
+			    result.add(conf.Id, conf);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	// Retourne le contenue d'une Configuration
+	
+	// Retourne le contenu d'une configuration
 	public ConfigurationColis GetConfigurationContent(int conf_id)
 	{
 		ConfigurationColis result = null;
@@ -75,6 +216,9 @@ public class EscrimDAO {
 		return result;
 	}
 	
+	// Retourne la liste de toute les Configurations avec la liste des Colis
+	
+	//Retourne toutes les Configuration avec les Colis
 	public List<ConfigurationColis> GetAllConfiguration()
 	{
 		List<ConfigurationColis> result = GetListeConfiguration();
@@ -92,7 +236,9 @@ public class EscrimDAO {
 		return result;
 	}
 	
+	//Retourne le contenu de tout un colis en fonction de son id
 	
+	// Retourne le contenu d'un colis
 	public Colis GetColisContent(int colis_id){
 		
 		Colis result = null;
@@ -114,9 +260,11 @@ public class EscrimDAO {
 				result.Poids = resultat.getInt( "poids" );
 				result.Designation = resultat.getString( "designation" );
 				result.Affectataire = resultat.getString( "affectataire" );
+				
+				System.out.println(resultat.getInt("options_Id"));
+				result.Option = GetOption(resultat.getInt("options_Id"));
 			    
-				result.Type = new TypeColis(resultat.getInt( "typeColis_Id" ));
-				result.Option = new OptionColis(resultat.getInt( "options_Id" ));
+				result.Type = GetTypeColis(resultat.getInt( "typeColis_Id" ));
 			    
 				result.ListeMedicaments = GetMedicamentInColis(result.Id);
 			    if (result.ListeMedicaments.isEmpty())
@@ -138,6 +286,9 @@ public class EscrimDAO {
 		return result;
 	}
 	
+	// Retourne le contenu de tous les colis
+	
+	// Retourne tous les Colis avec leur contenu
 	public List<Colis> GetAllColis(){
 		Connect();
 		
@@ -167,6 +318,54 @@ public class EscrimDAO {
 		return result;
 	}
 	
+	
+	// Retourne le contenu d'une option
+	public OptionColis GetOption(int option_id){
+		OptionColis opt = null;
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_getOptionInColis);
+			statement.setInt(1, option_id);
+			
+			ResultSet resultat = statement.executeQuery();
+			resultat.next();
+			
+			opt = new OptionColis(option_id,  resultat.getString("options_Designation"));
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return opt;
+	}
+	
+	// Retourne le Type d'un colis
+	public TypeColis GetTypeColis(int type_id){
+		TypeColis tc = null;
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_getTypeInColis);
+			statement.setInt(1, type_id);
+			
+			ResultSet resultat = statement.executeQuery();
+			resultat.next();
+			
+			tc = new TypeColis(type_id);
+			tc.Designation = resultat.getString("typeColis_Designation");
+			tc.Hauteur = resultat.getInt("hauteur");
+			tc.Largeur = resultat.getInt("largeur");
+			tc.Longueur = resultat.getInt("longueur");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return tc;
+	}
+	
+	//Retourne la liste de tous les médicaments contenu dans un colis
+	
+	//Retourne la liste des medicaments d'un colis
 	public List<Medicament> GetMedicamentInColis(int colis_id){
 		Connect();
 		
@@ -214,6 +413,9 @@ public class EscrimDAO {
 		return result;
 	}
 	
+	//Retourne la liste de tous les outils contenu dans un colis
+	
+	//Retourne la liste des outils d'un colis
 	public List<Outil> GetOutilsInColis(int colis_id){
 		Connect();
 		
@@ -248,6 +450,9 @@ public class EscrimDAO {
 		return result;
 	}
 	
+	//Retourne la liste de tous les objets contenu dans un colis
+	
+	//Retourne la liste des objets d'un colis
 	public List<Objet> GetObjetsInColis(int colis_id){
 		Connect();
 		
@@ -278,6 +483,8 @@ public class EscrimDAO {
 		return result;
 	}
 	
+	
+	// Connection à la BDD
 	private void Connect(){
 			
 			System.out.println("Driver O.K.");
@@ -303,6 +510,8 @@ public class EscrimDAO {
 			System.out.println("Connexion effective !");       	
 	}
 	
+	
+	// Deconnection à la BDD
 	private void Disconnect(){
 		
 		
@@ -321,13 +530,30 @@ public class EscrimDAO {
 	// Colis
 	private static String _getAllColis = "SELECT colis_Id FROM colis;";
 	private static String _getColis = "SELECT * FROM colis WHERE colis_Id = ?";
-	private static String _getMedicamentInColis = "SELECT colis_Id, M.medicament_Id, produit, quantite, forme_dosage, lot, dlu, dotation, D.dci_Id, D.dci_Designation, CT.therapeutique_Id, CT.therapeutique_Designation FROM medicament M, medicament_colis MC, dci D, classe_therapeutique CT WHERE M.medicament_Id = MC.medicament_Id AND D.dci_Id = M.dci_Id AND D.therapeutique_Id = CT.therapeutique_Id AND colis_Id = ?";
-	private static String _getOutilsInColis = "SELECT colis_Id, O.outil_Id, outil_Designation, quantite, dlu, reference FROM outil O, outil_colis OC WHERE O.outil_Id = OC.outil_Id AND colis_Id = ?";
-	private static String _getObjetsInColis = "SELECT colis_Id, O.objet_Id, objet_Designation FROM objet O, objet_colis OC WHERE O.objet_Id = OC.objet_Id AND colis_Id = ?";
 	
 	// Configuration
 	private static String _getListeConfiguration = "SELECT * FROM configuration;";
 	private static String _getConfigurationContent = "SELECT CC.config_Id, CO.config_Designation, C.colis_Id FROM configuration CO, configuration_colis CC, colis C WHERE CC.colis_Id = C.colis_Id AND CO.config_Id = CC.config_Id AND CC.config_Id = ?;";
-	// 
+	
+	// Options
+	private static String _getListeOptions = "SELECT * FROM options;";
+	private static String _getOptionInColis = "SELECT options_Id, options_Designation FROM options WHERE options_Id = ?";
 
+	// Medicament
+	private String _getListeMedicament = "SELECT M.medicament_Id, produit, quantite, forme_dosage, lot, dlu, dotation, D.dci_Id, D.dci_Designation, CT.therapeutique_Id, CT.therapeutique_Designation FROM medicament M,  dci D, classe_therapeutique CT WHERE D.dci_Id = M.dci_Id AND D.therapeutique_Id = CT.therapeutique_Id";
+	private static String _getMedicamentInColis = "SELECT colis_Id, M.medicament_Id, produit, quantite, forme_dosage, lot, dlu, dotation, D.dci_Id, D.dci_Designation, CT.therapeutique_Id, CT.therapeutique_Designation FROM medicament M, medicament_colis MC, dci D, classe_therapeutique CT WHERE M.medicament_Id = MC.medicament_Id AND D.dci_Id = M.dci_Id AND D.therapeutique_Id = CT.therapeutique_Id AND colis_Id = ?";
+	
+	//Objet
+	private static String _getListeObjets = "SELECT * FROM objet; ";
+	private static String _getObjetsInColis = "SELECT colis_Id, O.objet_Id, objet_Designation FROM objet O, objet_colis OC WHERE O.objet_Id = OC.objet_Id AND colis_Id = ?";
+	
+	//Outils 
+	private static String _getListeOutils = "SELECT * FROM outil;";
+	private static String _getOutilsInColis = "SELECT colis_Id, O.outil_Id, outil_Designation, quantite, dlu, reference FROM outil O, outil_colis OC WHERE O.outil_Id = OC.outil_Id AND colis_Id = ?";
+	
+	//TypeColis
+	private static String _getListeTypeColis = "SELECT * FROM TypeColis";
+	private static String _getTypeInColis = "SELECT * FROM TypeColis WHERE typeColis_Id = ?";
+	
+	
 }//EscrimDAO
