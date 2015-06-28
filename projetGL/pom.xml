@@ -20,6 +20,14 @@
 		<artifactId>log4j</artifactId>
 		<version>1.2.17</version>
 	</dependency>
+<!-- j'arrive pas a importer miglayout :( 
+-> inserer en dur le .jar  	
+  	<dependency>
+  		<groupId>com.miglayout</groupId>
+  		<artifactId>miglayout-parent</artifactId>
+  		<version>5.0</version>
+  	</dependency>
+ -->    	
   </dependencies>
   
   <!-- Update non fonctionnante -->
