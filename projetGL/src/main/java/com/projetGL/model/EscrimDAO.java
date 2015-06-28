@@ -460,7 +460,8 @@ public class EscrimDAO {
 	// -----------------------
 	// Insert Function
 	// -----------------------
-	//Retourne la liste de tous les outils contenu dans un colis
+	
+	// Insert un outils dans la BDD
 	public boolean InsertOutil(Outil outil){
 		Connect();
 		
@@ -472,9 +473,29 @@ public class EscrimDAO {
 			statement.setDate(4, (java.sql.Date)outil.Dlu);
 			statement.setString(5, outil.Reference);
 			ResultSet resultat = statement.executeQuery();
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	// Insert un outils dans la BDD et le lie au colis
+	public boolean InsertOutilInColis(Outil outil, int colis_id){
+		Connect();
+		//TODO : gestion de la presence u non de l'outils dans la BDD
+		try {
+			if (InsertOutil(outil)){
+				PreparedStatement statement = connexion.prepareStatement(_insertOutil_Colis);
+				statement.setInt(1, outil.Id);
+				statement.setInt(2, colis_id);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
 		}
 		return true;
 	}
