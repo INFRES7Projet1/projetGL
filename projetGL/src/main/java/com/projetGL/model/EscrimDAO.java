@@ -185,8 +185,6 @@ public class EscrimDAO {
 	}
 	
 	// Retourne le contenue d'une Configuration
-	
-	// Retourne le contenu d'une configuration
 	public ConfigurationColis GetConfigurationContent(int conf_id)
 	{
 		ConfigurationColis result = null;
@@ -217,8 +215,6 @@ public class EscrimDAO {
 	}
 	
 	// Retourne la liste de toute les Configurations avec la liste des Colis
-	
-	//Retourne toutes les Configuration avec les Colis
 	public List<ConfigurationColis> GetAllConfiguration()
 	{
 		List<ConfigurationColis> result = GetListeConfiguration();
@@ -237,8 +233,6 @@ public class EscrimDAO {
 	}
 	
 	//Retourne le contenu de tout un colis en fonction de son id
-	
-	// Retourne le contenu d'un colis
 	public Colis GetColisContent(int colis_id){
 		
 		Colis result = null;
@@ -251,7 +245,6 @@ public class EscrimDAO {
 			
 			if (resultat.next())
 			{
-				
 			    // Insertion des valeurs récupérées dans la BDD
 				result = new Colis(colis_id);
 			    
@@ -280,26 +273,19 @@ public class EscrimDAO {
 			    
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return result;
 	}
 	
 	// Retourne le contenu de tous les colis
-	
-	// Retourne tous les Colis avec leur contenu
 	public List<Colis> GetAllColis(){
 		Connect();
 		
 		List<Colis> result = new ArrayList<Colis>();
-		
-		/* Cr�ation de l'objet g�rant les requ�tes */
 		try {
 			Statement statement = connexion.createStatement();
 			ResultSet resultat = statement.executeQuery( _getAllColis );
-			
-			/* R�cup�ration des donn�es du r�sultat de la requ�te de lecture */
 			
 			int i = 0; 
 			while ( resultat.next() ) {
@@ -364,20 +350,14 @@ public class EscrimDAO {
 	}
 	
 	//Retourne la liste de tous les médicaments contenu dans un colis
-	
-	//Retourne la liste des medicaments d'un colis
 	public List<Medicament> GetMedicamentInColis(int colis_id){
 		Connect();
 		
 		List<Medicament> result = new ArrayList<Medicament>();
-		
-		/* Cr�ation de l'objet g�rant les requ�tes */
 		try {
 			PreparedStatement statement = connexion.prepareStatement(_getMedicamentInColis);
 			statement.setInt(1, colis_id);
 			ResultSet resultat = statement.executeQuery();
-			
-			/* R�cup�ration des donn�es du r�sultat de la requ�te de lecture */
 			
 			int i = 0; 
 			while ( resultat.next() ) {
@@ -414,20 +394,14 @@ public class EscrimDAO {
 	}
 	
 	//Retourne la liste de tous les outils contenu dans un colis
-	
-	//Retourne la liste des outils d'un colis
 	public List<Outil> GetOutilsInColis(int colis_id){
 		Connect();
 		
 		List<Outil> result = new ArrayList<Outil>();
-		
-		/* Cr�ation de l'objet g�rant les requ�tes */
 		try {
 			PreparedStatement statement = connexion.prepareStatement(_getOutilsInColis);
 			statement.setInt(1, colis_id);
 			ResultSet resultat = statement.executeQuery();
-			
-			/* R�cup�ration des donn�es du r�sultat de la requ�te de lecture */
 			
 			int i = 0; 
 			while ( resultat.next() ) {
@@ -483,6 +457,27 @@ public class EscrimDAO {
 		return result;
 	}
 	
+	// -----------------------
+	// Insert Function
+	// -----------------------
+	//Retourne la liste de tous les outils contenu dans un colis
+	public boolean InsertOutil(Outil outil){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_insertOutil);
+			statement.setInt(1, outil.Id);
+			statement.setString(2, outil.Designation);
+			statement.setInt(3, outil.Quantite);
+			statement.setDate(4, (java.sql.Date)outil.Dlu);
+			statement.setString(5, outil.Reference);
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
+	}
 	
 	// Connection à la BDD
 	private void Connect(){
@@ -509,7 +504,6 @@ public class EscrimDAO {
 			}
 			System.out.println("Connexion effective !");       	
 	}
-	
 	
 	// Deconnection à la BDD
 	private void Disconnect(){
@@ -555,5 +549,78 @@ public class EscrimDAO {
 	private static String _getListeTypeColis = "SELECT * FROM TypeColis";
 	private static String _getTypeInColis = "SELECT * FROM TypeColis WHERE typeColis_Id = ?";
 	
+	// -----------------------------
+	// Insert Queries
+	// -----------------------------
+	
+	private static String _insertColis = "INSERT INTO colis (colis_Id, designation, etat, poids, affectataire, option_Id, typeColis_Id) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
+	private static String _insertOutil = "INSERT INTO outil (outil_Id, outil_Designation, quantite, dlu, reference) VALUES (?, ?, ?, ?, ?)";
+	private static String _insertObjet = "INSERT INTO objet (objet_Id, objet_Designation, secteur_Id) VALUES ( ?, ?, ?)";
+	private static String _insertMedicament = "INSERT INTO medicament (medicament_Id, produit, quantite, forme_dosage, dlu, dotation, dci_Id) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
+	private static String _insertClasseTherapeutique = "INSERT INTO classe_therapeutique (therapeutique_Id, therapeutique_Designation) VALUES ( ?, ?)";
+	private static String _insertDCI = "INSERT INTO dci (dci_Id, dci_Designation, therapeutique_Id) VALUES ( ?, ?, ?)";
+	private static String _insertOption= "INSERT INTO options (options_Id, options_Designation) VALUES ( ?, ?)";
+	private static String _insertTypeColis = "INSERT INTO typecolis (typeColis_Id, typeColis_Designation, hauteur, largeur, longueur) VALUES ( ?, ?, ?, ?, ?)";
+	private static String _insertConfiguration= "INSERT INTO configuration (config_Id, config_Designation) VALUES ( ?, ?)";
+	private static String _insertSecteur= "INSERT INTO secteur (secteur_Id, secteur_Designation, Dgenerique_Id) VALUES ( ?, ?, ?)";
+	private static String _insertDesignationGenerique= "INSERT INTO designation_generique (Dgenerique_Id, Dgenerique_Designation) VALUES ( ?, ?)";
+	
+	// -----------------------------
+	// Insert Join Queries
+	// -----------------------------
+	
+	private static String _insertConfiguration_Colis = "INSERT INTO configuration_colis ( config_Id, colis_Id) VALUES ( ?, ?)";
+	private static String _insertMedicament_Colis = "INSERT INTO medicament_colis ( medicament_Id, colis_Id) VALUES ( ?, ?)";
+	private static String _insertObjet_Colis = "INSERT INTO objet_colis ( objet_Id, colis_Id) VALUES ( ?, ?)";
+	private static String _insertOutil_Colis = "INSERT INTO outil_colis ( outil_Id, colis_Id) VALUES ( ?, ?)";
+	
+	// -----------------------------
+	// Update Queries
+	// -----------------------------
+	
+	private static String _updateColis = "UPDATE colis SET WHERE medicament_Id = ?";
+	private static String _updateOutil = "UPDATE outil SET outil_Id = ?, outil_Designation = ?, quantite = ?, dlu = ?, reference = ? WHERE outil_Id = ?";
+	private static String _updateObjet = "UPDATE objet SET objet_Id = ?, objet_Designation = ?, secteur_Id = ? WHERE outil_Id = ? ";
+	private static String _updateMedicament = "UPDATE medicament SET medicament_Id = ?, produit = ?, quantite = ?, forme_dosage = ?, dlu = ?, dotation = ?, dci_Id = ? WHERE medicament_Id = ?";
+	private static String _updateClasseTherapeutique = "UPDATE classe_therapeutique SET therapeutique_Id = ?, therapeutique_Designation = ? WHERE therapeutique_Id = ?";
+	private static String _updateDCI = "UPDATE dci SET dci_Id = ?, dci_Designation = ?, therapeutique_Id = ? WHERE dci_Id = ?";
+	private static String _updateOption= "UPDATE option SET options_Id = ?, options_Designation = ? WHERE options_Id = ?";
+	private static String _updateTypeColis = "UPDATE typecolis SET typeColis_Id = ?, typeColis_Designation = ?, hauteur = ?, largeur = ?, longueur = ? WHERE typeColis_Id = ?";
+	private static String _updateConfiguration = "UPDATE configuration SET config_Id = ?, config_Designation = ? WHERE config_Id = ?";
+	private static String _updateSecteur = "UPDATE configuration SET secteur_Id = ?, secteur_Designation = ?, Dgenerique_Id = ? WHERE secteur_Id = ?";
+	private static String _updateDesignationGenerique = "UPDATE configuration SET Dgenerique_Id = ?, Dgenerique_Designation = ? WHERE Dgenerique_Id = ?";
+	
+	// -----------------------------
+	// Delete Queries
+	// -----------------------------
+	
+	private static String _deleteColis = "DELETE FROM colis WHERE colis_Id = ?";
+	private static String _deleteOutil = "DELETE FROM outil WHERE outil_Id = ?";
+	private static String _deleteObjet = "DELETE FROM objet WHERE objet_Id = ?";
+	private static String _deleteMedicament = "DELETE FROM medicament WHERE medicament_Id = ?";
+	private static String _deleteClasseTherapeutique = "DELETE FROM classe_therapeutique WHERE therapeutique_Id = ?";
+	private static String _deleteDCI = "DELETE FROM dci WHERE dci_Id = ?";
+	private static String _deleteOption= "DELETE FROM options WHERE options_Id = ?";
+	private static String _deleteTypeColis = "DELETE FROM typecolis WHERE typeColis_Id = ?";
+	private static String _deleteConfiguration= "DELETE FROM configuration WHERE config_Id = ?";
+	private static String _deleteSecteur= "DELETE FROM secteur WHERE secteur_Id = ?";
+	private static String _deleteDesignationGenerique= "DELETE FROM designation_generique WHERE Dgenerique_Id = ?";
+	
+	
+	// -----------------------------
+	// Delete Join Queries
+	// -----------------------------
+	
+	private static String _deleteConfFromConfiguration_Colis = "DELETE FROM configuration_colis WHERE conf_Id = ?";
+	private static String _deleteColisFromConfiguration_Colis = "DELETE FROM configuration_colis WHERE colis_Id = ?";
+	
+	private static String _deleteMedicamentFromMedicament_Colis = "DELETE FROM medicament_colis WHERE medicament_Id = ?";
+	private static String _deleteColisFromMedicament_Colis = "DELETE FROM medicament_colis WHERE colis_Id = ?";
+	
+	private static String _deleteObjetFromObjet_Colis = "DELETE FROM objet_colis WHERE objet_Id = ?";
+	private static String _deleteColisFromObjet_Colis = "DELETE FROM objet_colis WHERE colis_Id = ?";
+	
+	private static String _deleteOutilFromOutil_Colis = "DELETE FROM outil_colis WHERE outil_Id = ?";
+	private static String _deleteColisFromOutil_Colis = "DELETE FROM outil_colis WHERE colis_Id = ?";
 	
 }//EscrimDAO
