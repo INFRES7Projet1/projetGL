@@ -8,7 +8,6 @@ public class Objet {
 	
 	public String Designation;
 	
-	public Secteur SecteurUtilisation;
 	
 	// endregion properties
 	
@@ -25,12 +24,6 @@ public class Objet {
 	public Objet(int id, String designation){
 		Id = id;
 		Designation = designation;
-	}
-	
-	public Objet(int id, String designation, Secteur sec){
-		Id = id;
-		Designation = designation;
-		SecteurUtilisation = sec;
 	}
 	
 	// public methods

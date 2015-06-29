@@ -34,4 +34,10 @@ public class Secteur {
 	}
 	
 	// endregion Constructors
+	
+	// region public methods
+	
+	public String toString(){
+		return "(Secteur : " + Id + ", " + Designation + ", " + DesignationGenerique.toString() + " )";
+	}
 }

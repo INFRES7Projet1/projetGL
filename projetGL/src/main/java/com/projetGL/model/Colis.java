@@ -44,6 +44,9 @@ public class Colis {
 	// Liste des Objets contenus dans le colis
 	public List<Objet> ListeObjets;
 	
+	// Secteur d'utilisation du colis
+	public Secteur SecteurUtilisation;
+	
 	//endregion properties
 	
 	
@@ -67,7 +70,7 @@ public class Colis {
 	}
 	
 	// Constructeur initialisant toute ses données membres
-	public Colis(int id, String designation, Status etat, int poids, String affectataire, OptionColis option, TypeColis type, List<Medicament> listeMedicaments, List<Outil> listeOutils, List<Objet> listeObjets)
+	public Colis(int id, String designation, Status etat, int poids, String affectataire, OptionColis option, TypeColis type, Secteur secteur, List<Medicament> listeMedicaments, List<Outil> listeOutils, List<Objet> listeObjets)
 	{ 
 		Id = id;
 		Designation = designation;
@@ -76,9 +79,10 @@ public class Colis {
 		Affectataire = affectataire;
 		Option = option;
 		Type = type;
-		ListeMedicaments = listeMedicaments; 
+		ListeMedicaments = listeMedicaments;
 		ListeOutils = listeOutils;
 		ListeObjets = listeObjets;
+		SecteurUtilisation = secteur;
 	}
 	
 	// endregion Constructor
@@ -87,7 +91,7 @@ public class Colis {
 	// region public methods
 	
 	public String toString(){
-		String ret = "Colis : " + Id + ", " + Designation + ", " + Etat + ", " + Poids + ", " + Affectataire + ", " + Option.toString() + ", " + Type.toString() +"\n";
+		String ret = "Colis : " + Id + ", " + Designation + ", " + Etat + ", " + Poids + ", " + Affectataire + ", " + Option.toString() + ", " + Type.toString() + ", " + SecteurUtilisation.toString() +"\n";
 		
 		if(ListeMedicaments != null){
 			

@@ -26,4 +26,10 @@ public class DesignationGenerique {
 		}
 		
 		// endregion Constructors
+		
+		// region public methods
+		
+		public String toString(){
+			return "(D.G : " + Id + ", " + Designation + " )";
+		}
 }
