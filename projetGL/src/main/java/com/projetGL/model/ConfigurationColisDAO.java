@@ -11,7 +11,7 @@ public class ConfigurationColisDAO extends DAO<ConfigurationColis> {
 
 	public ConfigurationColis create(ConfigurationColis conf) {
 		try {
-			PreparedStatement statement = connexion.prepareStatement(_insertConfiguration);
+			PreparedStatement statement = this.connect.prepareStatement(_insertConfiguration);
 			statement.setInt(1, conf.Id);
 			statement.setString(2, conf.Designation);
 			
@@ -26,7 +26,7 @@ public class ConfigurationColisDAO extends DAO<ConfigurationColis> {
 	}
 	
 	
-	//Retourne le contenu de tout un colis en fonction de son id
+	//Retourne le contenu de tout une configuration en fonction de son id
 	public ConfigurationColis find(int conf_id){
 		ConfigurationColis result = null;
 		
@@ -43,7 +43,7 @@ public class ConfigurationColisDAO extends DAO<ConfigurationColis> {
 					result.Designation = resultat.getString("config_Designation");
 					result.ListeColis = new ArrayList<Colis>();
 				}
-				result.ListeColis.add(i, ColisDAO.GetColisContent(resultat.getInt("colis_Id")));
+				result.ListeColis.add(i, new ColisDAO().find(resultat.getInt("colis_Id")));
 			    i++;
 			}
 			
@@ -54,30 +54,76 @@ public class ConfigurationColisDAO extends DAO<ConfigurationColis> {
 		return result;
 	}
 	
-	// Retourne le contenu de tous les colis
-	public List<Colis> GetAllColis(){
+	// Retourne la liste des configurations
+	public List<ConfigurationColis> GetListeConfiguration(){
+
+		List<ConfigurationColis> result = new ArrayList<ConfigurationColis>();
+		int i = 0;
+		try {
+			PreparedStatement statement = this.connect.prepareStatement(_getListeConfiguration);
+			
+			ResultSet resultat = statement.executeQuery();
+			
+			while ( resultat.next() ) {
+				ConfigurationColis conf = new ConfigurationColis(resultat.getInt("config_Id"));
+				conf.Designation = resultat.getString("config_Designation");
+				    
+			    result.add(i, conf);
+			    i++;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	// Retourne la liste de toute les Configurations avec la liste des Colis
+	public List<ConfigurationColis> GetAllConfiguration()
+	{
+		List<ConfigurationColis> result = GetListeConfiguration();
+		
+		//int i=0;
+		for(ConfigurationColis conf : result){
+			ConfigurationColis c = find(conf.Id);
+			
+			if (c != null){
+				result.set( conf.Id, c);
+				//i++;
+			}
+		}
 		
 		return result;
 	}
 	
-	public ConfigurationColis update(ConfigurationColis colis) {
-		Colis co = null;
+	public ConfigurationColis update(ConfigurationColis conf) {
+		ConfigurationColis co = null;
 		try {
 			PreparedStatement statement = this.connect.prepareStatement(_updateConfiguration);
 			statement.setString(1, conf.Designation);
 			statement.setInt(2, conf.Id);
+			
+			ResultSet resultat = statement.executeQuery();
+			
+			co = find(co.Id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return co;
+	}
+
+
+	public void delete(ConfigurationColis conf) {
+
+		try {
+			PreparedStatement statement = this.connect.prepareStatement(_deleteConfiguration);
+			statement.setInt(1, conf.Id);
+			
 			ResultSet resultat = statement.executeQuery();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return false;
 		}
-		return true;
-	}
-
-
-	public void delete(Colis colis) {
-		
 	}
 	
 	// Configuration

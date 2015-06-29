@@ -53,19 +53,19 @@ public class ColisDAO extends DAO<Colis> {
 				result.Affectataire = resultat.getString( "affectataire" );
 				
 				System.out.println(resultat.getInt("options_Id"));
-				result.Option = GetOption(resultat.getInt("options_Id"));
+				result.Option = new OptionColisDAO().find(resultat.getInt("options_Id"));
 			    
-				result.Type = GetTypeColis(resultat.getInt( "typeColis_Id" ));
+				result.Type = new TypeColisDAO().find(resultat.getInt( "typeColis_Id" ));
 			    
-				result.ListeMedicaments = GetMedicamentInColis(result.Id);
+				result.ListeMedicaments = new MedicamentDAO().GetMedicamentInColis(result.Id);
 			    if (result.ListeMedicaments.isEmpty())
 			    	result.ListeMedicaments = null;
 			    
-			    result.ListeOutils = GetOutilsInColis(result.Id);
+			    result.ListeOutils = new OutilDAO().GetOutilsInColis(result.Id);
 			    if (result.ListeOutils.isEmpty())
 			    	result.ListeOutils= null;
 			    
-			    result.ListeObjets =  GetObjetsInColis(result.Id);
+			    result.ListeObjets =  new ObjetDAO()GetObjetsInColis(result.Id);
 			    if (result.ListeObjets.isEmpty())
 			    	result.ListeObjets= null;
 			    
