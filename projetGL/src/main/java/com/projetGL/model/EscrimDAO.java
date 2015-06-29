@@ -20,6 +20,11 @@ public class EscrimDAO {
 		}
 	}
 	
+	
+	// -----------------------------------
+	// SELECT Functions
+	// -----------------------------------
+	
 	public List<TypeColis> GetListeTypeColis(){
 		List<TypeColis> result = new ArrayList<TypeColis>();
 		
@@ -458,8 +463,9 @@ public class EscrimDAO {
 		return result;
 	}
 	
+	
 	// -----------------------
-	// Insert Function
+	// INSERT Function
 	// -----------------------
 	
 	// Insert un outils dans la BDD
@@ -613,7 +619,7 @@ public class EscrimDAO {
 		return true;
 	}
 	
-	// Insert une Classe Therapeutique dans la BDD
+	// Insert une Option dans la BDD
 	public boolean InsertOption(OptionColis op){
 		Connect();
 		
@@ -630,7 +636,7 @@ public class EscrimDAO {
 		return true;
 	}
 	
-// Insert une Classe Therapeutique dans la BDD
+	// Insert une Type Colis dans la BDD
 	public boolean InsertTypeColis(TypeColis tp){
 		Connect();
 		
@@ -650,8 +656,42 @@ public class EscrimDAO {
 		return true;
 	}
 	
+	// Insert une Secteur dans la BDD
+	public boolean InsertSecteur(Secteur sec){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_insertSecteur);
+			statement.setInt(1, sec.Id);
+			statement.setString(2, sec.Designation);
+			statement.setInt(3, sec.DesignationGenerique.Id);
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
 	
-	// Insert un Objet dans la BDD
+	// Insert une Designation Generique dans la BDD
+	public boolean InsertDesignationGenerique(DesignationGenerique dg){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_insertDesignationGenerique);
+			statement.setInt(1, dg.Id);
+			statement.setString(2, dg.Designation);
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+		
+	// Insert un Colis dans la BDD
 	public boolean InsertColis(Colis colis){
 		Connect();
 		
@@ -674,7 +714,7 @@ public class EscrimDAO {
 		return true;
 	}
 	
-	// Insert un medicament dans la BDD et le lie au colis
+	// Insert un colis dans la BDD et le lie à une configuration
 	public boolean InsertColisInConfiguration(Colis colis, int conf_id){
 		Connect();
 		//TODO : gestion de la presence u non de l'outils dans la BDD
@@ -691,7 +731,577 @@ public class EscrimDAO {
 		return true;
 	}
 	
+	// Insert une configuration dans la BDD
+	public boolean InsertConfiguration(ConfigurationColis conf){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_insertConfiguration);
+			statement.setInt(1, conf.Id);
+			statement.setString(2, conf.Designation);
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
 	
+	
+	// --------------------------------
+	// UPDATE Values
+	// --------------------------------
+	
+	// Update un Objet dans la BDD
+	public boolean UpdateObjet(Objet objet){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_updateObjet);
+			statement.setString( 1, objet.Designation);
+			statement.setInt( 2, objet.Id);
+			
+			ResultSet resultat = statement.executeQuery();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+		
+	// Update une DCI dans la BDD
+	public boolean UpdateDCI(DCI dci){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_updateDCI);
+			statement.setString(1, dci.Designation);
+			statement.setInt(2, dci.ClasseT.Id);
+			statement.setInt(3, dci.Id);
+			
+			ResultSet resultat = statement.executeQuery();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	// Update une Classe Therapeutique dans la BDD
+	public boolean UpdateClasseTherapeutique(ClasseTherapeutique ct){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_updateClasseTherapeutique);
+			statement.setString( 1, ct.Designation);
+			statement.setInt( 2, ct.Id);
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	// Update une Option dans la BDD
+	public boolean UpdateOption(OptionColis op){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_updateOption);
+			statement.setString(1, op.Designation);
+			statement.setInt(2, op.Id);
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	// Update un Type Colis dans la BDD
+	public boolean UpdateTypeColis(TypeColis tp){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_updateTypeColis);
+			statement.setString(1, tp.Designation);
+			statement.setInt(2, tp.Hauteur);
+			statement.setInt(3, tp.Largeur);
+			statement.setInt(4, tp.Longueur);
+			statement.setInt(5, tp.Id);
+			
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	// Update un Secteur dans la BDD
+	public boolean UpdateSecteur(Secteur sec){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_updateSecteur);
+			statement.setString(1, sec.Designation);
+			statement.setInt(2, sec.DesignationGenerique.Id);
+			statement.setInt(3, sec.Id);
+			
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	// Update une Designation Generique dans la BDD
+	public boolean UpdateDesignationGenerique(DesignationGenerique dg){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_updateDesignationGenerique);
+			statement.setString(1, dg.Designation);
+			statement.setInt(2, dg.Id);
+			
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+		
+	// Update un Colis dans la BDD
+	public boolean UpdateColis(Colis colis){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_updateColis);
+			statement.setString(1, colis.Designation);
+			statement.setString(2, colis.Etat.toString());
+			statement.setInt(3, colis.Poids);
+			statement.setString(4, colis.Affectataire);
+			statement.setInt(5, colis.Option.Id);
+			statement.setInt(6, colis.Type.Id);
+			statement.setInt(7, colis.Id);
+			ResultSet resultat = statement.executeQuery();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	// Update une configuration dans la BDD
+	public boolean UpdateConfiguration(ConfigurationColis conf){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_updateConfiguration);
+			statement.setString(1, conf.Designation);
+			statement.setInt(2, conf.Id);
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	// Update un medicament dans la BDD
+	public boolean UpdateMedicament(Medicament medicament){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_updateMedicament);
+			statement.setString(2, medicament.Produit);
+			statement.setInt(3, medicament.Quantite);
+			statement.setString(4, medicament.FormeDosage);
+			statement.setDate(5, (java.sql.Date)medicament.Dlu);
+			statement.setString(6, medicament.Dotation);
+			statement.setInt(7, medicament.Dci.Id);
+			statement.setInt(1, medicament.Id);
+			
+			ResultSet resultat = statement.executeQuery();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+		
+	// Update un outils dans la BDD
+	public boolean UpdateOutil(Outil outil){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_updateOutil);
+			statement.setString(2, outil.Designation);
+			statement.setInt(3, outil.Quantite);
+			statement.setDate(4, (java.sql.Date)outil.Dlu);
+			statement.setString(5, outil.Reference);
+			statement.setInt(1, outil.Id);
+			
+			ResultSet resultat = statement.executeQuery();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	// -----------------------
+	// DELETE Queries
+	// -----------------------
+	
+	// Delete un outils dans la BDD
+	public boolean DeleteOutil(int outil_id){
+			Connect();
+			
+			try {
+				PreparedStatement statement = connexion.prepareStatement(_deleteOutil);
+				statement.setInt(1, outil_id);
+				
+				ResultSet resultat = statement.executeQuery();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return false;
+			}
+			return true;
+		}
+		
+	// Delete un medicament dans la BDD
+	public boolean DeleteMedicament(int medicament_id){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_deleteMedicament);
+			statement.setInt(1, medicament_id);
+			ResultSet resultat = statement.executeQuery();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	// Delete un Objet dans la BDD
+	public boolean DeleteObjet(int objet_id){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_deleteObjet);
+			statement.setInt(1, objet_id);
+			ResultSet resultat = statement.executeQuery();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	// Delete une DCI dans la BDD
+	public boolean DeleteDCI(int dci_id){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_deleteDCI);
+			statement.setInt(1, dci_id);
+			ResultSet resultat = statement.executeQuery();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	// Delete une Classe Therapeutique dans la BDD
+	public boolean DeleteClasseTherapeutique(int ct_id){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_deleteClasseTherapeutique);
+			statement.setInt(1, ct_id);
+			
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+		
+	// Delete une Option dans la BDD
+	public boolean DeleteOption(int op_id){
+			Connect();
+			
+			try {
+				PreparedStatement statement = connexion.prepareStatement(_deleteOption);
+				statement.setInt(1, op_id);
+				
+				ResultSet resultat = statement.executeQuery();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return false;
+			}
+			return true;
+		}
+		
+	// Delete une Type Colis dans la BDD
+	public boolean DeleteTypeColis(int tp_id){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_deleteTypeColis);
+			statement.setInt(1, tp_id);
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+		
+	// Delete une Secteur dans la BDD
+	public boolean DeleteSecteur(int sec_id){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_deleteSecteur);
+			statement.setInt(1, sec_id);
+			
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+		
+	// Delete une Designation Generique dans la BDD
+	public boolean DeleteDesignationGenerique(int dg_id){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_deleteDesignationGenerique);
+			statement.setInt(1, dg_id);
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+		
+	// Delete un Colis dans la BDD
+	public boolean DeleteColis(int colis_id){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_deleteColis);
+			statement.setInt(1, colis_id);
+			ResultSet resultat = statement.executeQuery();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	// Delete une configuration dans la BDD
+	public boolean DeleteConfiguration(int conf_id){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_deleteConfiguration);
+			statement.setInt(1, conf_id);
+			
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	// Delete toutes les lignes qui lie les colis a une configuration dans la BDD
+	public boolean DeleteConfFromConfigurationColis(int conf_id){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_deleteConfFromConfiguration_Colis);
+			statement.setInt(1, conf_id);
+			
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	// Delete la jointure liant un colis à sa configuration
+	public boolean DeleteColisFromConfigurationColis(int colis_id){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_deleteColisFromConfiguration_Colis);
+			statement.setInt(1, colis_id);
+			
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	
+	// Delete la jointure liant un medicament à son colis
+	public boolean DeleteMedicamentFromMedicamentColis(int med_id){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_deleteMedicamentFromMedicament_Colis);
+			statement.setInt(1, med_id);
+			
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	// Delete la jointure liant un colis à sa configuration
+	public boolean DeleteColisFromMedicamentColis(int colis_id){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_deleteColisFromMedicament_Colis);
+			statement.setInt(1, colis_id);
+			
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	
+	// Delete la jointure liant un medicament à son colis
+	public boolean DeleteObjetFromObjetColis(int obj_id){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_deleteObjetFromObjet_Colis);
+			statement.setInt(1, obj_id);
+			
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	// Delete la jointure liant un colis à sa configuration
+	public boolean DeleteColisFromObjetColis(int colis_id){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_deleteColisFromObjet_Colis);
+			statement.setInt(1, colis_id);
+			
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	
+	// Delete la jointure liant un medicament à son colis
+	public boolean DeleteOutilFromOutilColis(int outil_id){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_deleteOutilFromOutil_Colis);
+			statement.setInt(1, outil_id);
+			
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	// Delete la jointure liant un colis à sa configuration
+	public boolean DeleteColisFromOutilColis(int colis_id){
+		Connect();
+		
+		try {
+			PreparedStatement statement = connexion.prepareStatement(_deleteColisFromOutil_Colis);
+			statement.setInt(1, colis_id);
+			
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	// -----------------------
+	// Connections Handlers
+	// -----------------------
 	
 	// Connection à la BDD
 	private void Connect(){
@@ -725,7 +1335,9 @@ public class EscrimDAO {
 		
 	}
 	
+	// -----------------------
 	// Static attributes
+	// -----------------------
 	
 	// User of mysql server
 	private static String _user = "EscrimUser";
@@ -793,16 +1405,16 @@ public class EscrimDAO {
 	// -----------------------------
 	
 	private static String _updateColis = "UPDATE colis SET WHERE medicament_Id = ?";
-	private static String _updateOutil = "UPDATE outil SET outil_Id = ?, outil_Designation = ?, quantite = ?, dlu = ?, reference = ? WHERE outil_Id = ?";
-	private static String _updateObjet = "UPDATE objet SET objet_Id = ?, objet_Designation = ? WHERE outil_Id = ? ";
-	private static String _updateMedicament = "UPDATE medicament SET medicament_Id = ?, produit = ?, quantite = ?, forme_dosage = ?, dlu = ?, dotation = ?, dci_Id = ? WHERE medicament_Id = ?";
-	private static String _updateClasseTherapeutique = "UPDATE classe_therapeutique SET therapeutique_Id = ?, therapeutique_Designation = ? WHERE therapeutique_Id = ?";
-	private static String _updateDCI = "UPDATE dci SET dci_Id = ?, dci_Designation = ?, therapeutique_Id = ? WHERE dci_Id = ?";
-	private static String _updateOption= "UPDATE option SET options_Id = ?, options_Designation = ? WHERE options_Id = ?";
-	private static String _updateTypeColis = "UPDATE typecolis SET typeColis_Id = ?, typeColis_Designation = ?, hauteur = ?, largeur = ?, longueur = ? WHERE typeColis_Id = ?";
-	private static String _updateConfiguration = "UPDATE configuration SET config_Id = ?, config_Designation = ? WHERE config_Id = ?";
-	private static String _updateSecteur = "UPDATE configuration SET secteur_Id = ?, secteur_Designation = ?, Dgenerique_Id = ? WHERE secteur_Id = ?";
-	private static String _updateDesignationGenerique = "UPDATE configuration SET Dgenerique_Id = ?, Dgenerique_Designation = ? WHERE Dgenerique_Id = ?";
+	private static String _updateOutil = "UPDATE outil SET outil_Designation = ?, quantite = ?, dlu = ?, reference = ? WHERE outil_Id = ?";
+	private static String _updateObjet = "UPDATE objet SET objet_Designation = ? WHERE objet_Id = ? ";
+	private static String _updateMedicament = "UPDATE medicament SET produit = ?, quantite = ?, forme_dosage = ?, dlu = ?, dotation = ?, dci_Id = ? WHERE medicament_Id = ?";
+	private static String _updateClasseTherapeutique = "UPDATE classe_therapeutique SET therapeutique_Designation = ? WHERE therapeutique_Id = ?";
+	private static String _updateDCI = "UPDATE dci SET dci_Designation = ?, therapeutique_Id = ? WHERE dci_Id = ?";
+	private static String _updateOption= "UPDATE option SET options_Designation = ? WHERE options_Id = ?";
+	private static String _updateTypeColis = "UPDATE typecolis SET typeColis_Designation = ?, hauteur = ?, largeur = ?, longueur = ? WHERE typeColis_Id = ?";
+	private static String _updateConfiguration = "UPDATE configuration SET config_Designation = ? WHERE config_Id = ?";
+	private static String _updateSecteur = "UPDATE configuration SET secteur_Designation = ?, Dgenerique_Id = ? WHERE secteur_Id = ?";
+	private static String _updateDesignationGenerique = "UPDATE configuration SET Dgenerique_Designation = ? WHERE Dgenerique_Id = ?";
 	
 	// -----------------------------
 	// Delete Queries
