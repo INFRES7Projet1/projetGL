@@ -51,6 +51,7 @@ public class Fenetre {
 					/*ConfigurationColis conf = database.GetConfigurationContent(1);
 					System.out.println(conf.toString());*/
 					
+					/*
 					List<ConfigurationColis> res = database.GetAllConfiguration();
 					for(ConfigurationColis config : res){
 						System.out.println(config.toString());
@@ -79,7 +80,13 @@ public class Fenetre {
 					List<TypeColis> ltc = database.GetListeTypeColis();
 					for(TypeColis tc : ltc){
 						System.out.println(tc.toString());
-					}
+					}*/
+					
+					MedicamentDAO meddao = new MedicamentDAO();
+					Medicament med = new Medicament();
+					med = meddao.find(0);
+					
+					med.toString();
 					
 					// DB
 					Fenetre window = new Fenetre();

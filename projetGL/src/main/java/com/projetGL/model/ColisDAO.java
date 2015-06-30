@@ -12,7 +12,7 @@ public class ColisDAO extends DAO<Colis> {
 	public Colis create(Colis colis) {
 		
 		try {
-			PreparedStatement statement = this.connect.prepareStatement(_insertColis);
+			PreparedStatement statement = this.connect.prepareStatement(_insert);
 			statement.setInt(1, colis.Id);
 			statement.setString(2, colis.Designation);
 			statement.setString(3, colis.Etat.toString());
@@ -30,14 +30,13 @@ public class ColisDAO extends DAO<Colis> {
 		return colis;
 	}
 	
-	
 	//Retourne le contenu de tout un colis en fonction de son id
 	public Colis find(int colis_id){
 		
 		Colis result = null;
 		
 		try {
-			PreparedStatement statement = this.connect.prepareStatement(_getColis);
+			PreparedStatement statement = this.connect.prepareStatement(_get);
 			statement.setInt(1, colis_id);
 			ResultSet resultat = statement.executeQuery();
 			
@@ -56,7 +55,7 @@ public class ColisDAO extends DAO<Colis> {
 				result.Option = new OptionColisDAO().find(resultat.getInt("options_Id"));
 			    
 				result.Type = new TypeColisDAO().find(resultat.getInt( "typeColis_Id" ));
-			    
+			    result.SecteurUtilisation = new SecteurDAO().find(resultat.getShort("secteur_Id"));
 				result.ListeMedicaments = new MedicamentDAO().GetMedicamentInColis(result.Id);
 			    if (result.ListeMedicaments.isEmpty())
 			    	result.ListeMedicaments = null;
@@ -65,7 +64,7 @@ public class ColisDAO extends DAO<Colis> {
 			    if (result.ListeOutils.isEmpty())
 			    	result.ListeOutils= null;
 			    
-			    result.ListeObjets =  new ObjetDAO()GetObjetsInColis(result.Id);
+			    result.ListeObjets =  new ObjetDAO().GetObjetsInColis(result.Id);
 			    if (result.ListeObjets.isEmpty())
 			    	result.ListeObjets= null;
 			    
@@ -77,12 +76,12 @@ public class ColisDAO extends DAO<Colis> {
 	}
 	
 	// Retourne le contenu de tous les colis
-	public List<Colis> GetAllColis(){
+	public List<Colis> findListe(){
 		
 		List<Colis> result = new ArrayList<Colis>();
 		try {
 			Statement statement = this.connect.createStatement();
-			ResultSet resultat = statement.executeQuery( _getAllColis );
+			ResultSet resultat = statement.executeQuery( _getListe );
 			
 			int i = 0; 
 			while ( resultat.next() ) {
@@ -101,10 +100,60 @@ public class ColisDAO extends DAO<Colis> {
 		return result;
 	}
 	
+	// Insert un outils dans la BDD et le lie au colis
+	public boolean InsertOutilInColis(Outil outil, int colis_id){
+		
+		try {
+			if (new OutilDAO().find(outil.Id) != null){
+				PreparedStatement statement = this.connect.prepareStatement(_insertOutil_Colis);
+				statement.setInt(1, outil.Id);
+				statement.setInt(2, colis_id);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	// Insert un medicament dans la BDD et le lie au colis
+	public boolean InsertMedicamentInColis(Medicament med, int colis_id){
+		
+		try {
+			if (new MedicamentDAO().find(med.Id) != null ){
+				PreparedStatement statement = this.connect.prepareStatement(_insertMedicament_Colis);
+				statement.setInt(1, med.Id);
+				statement.setInt(2, colis_id);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	// Insert un medicament dans la BDD et le lie au colis
+	public boolean InsertObjetInColis(Objet obj, int colis_id){
+		
+		try {
+			if (new ObjetDAO().find(obj.Id) != null){
+				PreparedStatement statement = this.connect.prepareStatement(_insertObjet_Colis);
+				statement.setInt(1, obj.Id);
+				statement.setInt(2, colis_id);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+		
 	public Colis update(Colis colis) {
 		
 		try {
-			PreparedStatement statement = this.connect.prepareStatement(_updateColis);
+			PreparedStatement statement = this.connect.prepareStatement(_update);
 			statement.setString(1, colis.Designation);
 			statement.setString(2, colis.Etat.toString());
 			statement.setInt(3, colis.Poids);
@@ -122,10 +171,13 @@ public class ColisDAO extends DAO<Colis> {
 		return colis;
 	}
 
-
+	// -------------------------
+	// DELETE Queries
+	// -------------------------
+	
 	public void delete(Colis colis) {
 		try {
-			PreparedStatement statement = this.connect.prepareStatement(_deleteColis);
+			PreparedStatement statement = this.connect.prepareStatement(_delete);
 			statement.setInt(1, colis.Id);
 			ResultSet resultat = statement.executeQuery();
 			
@@ -134,17 +186,89 @@ public class ColisDAO extends DAO<Colis> {
 			e.printStackTrace();
 		}
 	}
+		
+	// Delete la jointure liant un colis à sa configuration
+	public boolean DeleteColisFromConfigurationColis(int colis_id){
+		try {
+			PreparedStatement statement = this.connect.prepareStatement(_deleteColisFromConfiguration_Colis);
+			statement.setInt(1, colis_id);
+			
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	// Delete la jointure liant un colis à sa configuration
+	public boolean DeleteColisFromObjetColis(int colis_id){
+		try {
+			PreparedStatement statement = this.connect.prepareStatement(_deleteColisFromObjet_Colis);
+			statement.setInt(1, colis_id);
+			
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	// Delete la jointure liant un colis à sa configuration
+	public boolean DeleteColisFromOutilColis(int colis_id){
+		try {
+			PreparedStatement statement = this.connect.prepareStatement(_deleteColisFromOutil_Colis);
+			statement.setInt(1, colis_id);
+			
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	// Delete la jointure liant un colis à sa configuration
+	public boolean DeleteColisFromMedicamentColis(int colis_id){
+
+		try {
+			PreparedStatement statement = this.connect.prepareStatement(_deleteColisFromMedicament_Colis);
+			statement.setInt(1, colis_id);
+			
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	// -----------------------
+	// QUERIES 
+	// -----------------------
 	
 	// Colis
-	private static String _getAllColis = "SELECT colis_Id FROM colis;";
-	private static String _getColis = "SELECT * FROM colis WHERE colis_Id = ?";
+	private static String _getListe = "SELECT colis_Id FROM colis;";
+	private static String _get = "SELECT * FROM colis WHERE colis_Id = ?";
 		
 	//Insert Colis
-	private static String _insertColis = "INSERT INTO colis (colis_Id, designation, etat, poids, affectataire, option_Id, typeColis_Id) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
+	private static String _insert = "INSERT INTO colis (colis_Id, designation, etat, poids, affectataire, option_Id, typeColis_Id) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
+	private static String _insertMedicament_Colis = "INSERT INTO medicament_colis ( medicament_Id, colis_Id) VALUES ( ?, ?)";
+	private static String _insertObjet_Colis = "INSERT INTO objet_colis ( objet_Id, colis_Id) VALUES ( ?, ?)";
+	private static String _insertOutil_Colis = "INSERT INTO outil_colis ( outil_Id, colis_Id) VALUES ( ?, ?)";
 	
 	// Update Colis
-	private static String _updateColis = "UPDATE colis SET WHERE medicament_Id = ?";
+	private static String _update = "UPDATE colis SET WHERE medicament_Id = ?";
 	
 	// Delete Colis
-	private static String _deleteColis = "DELETE FROM colis WHERE colis_Id = ?";
+	private static String _delete = "DELETE FROM colis WHERE colis_Id = ?";
+	private static String _deleteColisFromConfiguration_Colis = "DELETE FROM configuration_colis WHERE colis_Id = ?";
+	private static String _deleteColisFromMedicament_Colis = "DELETE FROM medicament_colis WHERE colis_Id = ?";
+	private static String _deleteColisFromObjet_Colis = "DELETE FROM objet_colis WHERE colis_Id = ?";
+	private static String _deleteColisFromOutil_Colis = "DELETE FROM outil_colis WHERE colis_Id = ?";
 }

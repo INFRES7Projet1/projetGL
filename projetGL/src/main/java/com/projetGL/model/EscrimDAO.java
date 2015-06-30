@@ -73,8 +73,6 @@ public class EscrimDAO {
 		return result;
 	}
 	
-	
-	
 	// Retourne la liste des configurations sans les colis
 	public List<ConfigurationColis> GetListeConfiguration(){
 
@@ -270,41 +268,7 @@ public class EscrimDAO {
 	// -----------------------
 	
 	
-	// Insert un outils dans la BDD et le lie au colis
-	public boolean InsertOutilInColis(Outil outil, int colis_id){
-		Connect();
-		//TODO : gestion de la presence u non de l'outils dans la BDD
-		try {
-			if (InsertOutil(outil)){
-				PreparedStatement statement = connexion.prepareStatement(_insertOutil_Colis);
-				statement.setInt(1, outil.Id);
-				statement.setInt(2, colis_id);
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
 	
-	// Insert un medicament dans la BDD et le lie au colis
-	public boolean InsertMedicamentInColis(Medicament med, int colis_id){
-		Connect();
-		//TODO : gestion de la presence u non de l'outils dans la BDD
-		try {
-			if (InsertMedicament(med)){
-				PreparedStatement statement = connexion.prepareStatement(_insertMedicament_Colis);
-				statement.setInt(1, med.Id);
-				statement.setInt(2, colis_id);
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
 	
 	// Insert un Objet dans la BDD
 	public boolean InsertObjet(Objet objet){
@@ -324,41 +288,8 @@ public class EscrimDAO {
 		return true;
 	}
 	
-	// Insert un medicament dans la BDD et le lie au colis
-	public boolean InsertObjetInColis(Objet obj, int colis_id){
-		Connect();
-		//TODO : gestion de la presence u non de l'outils dans la BDD
-		try {
-			if (InsertObjet(obj)){
-				PreparedStatement statement = connexion.prepareStatement(_insertObjet_Colis);
-				statement.setInt(1, obj.Id);
-				statement.setInt(2, colis_id);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
 	
-	// Insert une DCI dans la BDD
-	public boolean InsertDCI(DCI dci){
-		Connect();
-		
-		try {
-			PreparedStatement statement = connexion.prepareStatement(_insertDCI);
-			statement.setInt(1, dci.Id);
-			statement.setString(2, dci.Designation);
-			statement.setInt(3, dci.ClasseT.Id);
-			ResultSet resultat = statement.executeQuery();
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
+	
 	
 	// Insert une Option dans la BDD
 	public boolean InsertOption(OptionColis op){
@@ -415,39 +346,9 @@ public class EscrimDAO {
 		return true;
 	}
 	
-	// Insert une Designation Generique dans la BDD
-	public boolean InsertDesignationGenerique(DesignationGenerique dg){
-		Connect();
-		
-		try {
-			PreparedStatement statement = connexion.prepareStatement(_insertDesignationGenerique);
-			statement.setInt(1, dg.Id);
-			statement.setString(2, dg.Designation);
-			ResultSet resultat = statement.executeQuery();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
 	
-	// Insert un colis dans la BDD et le lie à une configuration
-	public boolean InsertColisInConfiguration(Colis colis, int conf_id){
-		Connect();
-		//TODO : gestion de la presence u non de l'outils dans la BDD
-		try {
-			if (InsertColis(colis)){
-				PreparedStatement statement = connexion.prepareStatement(_insertConfiguration_Colis);
-				statement.setInt(1, conf_id);
-				statement.setInt(2, colis.Id);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
+	
+	
 	
 	// Insert une configuration dans la BDD
 	public boolean InsertConfiguration(ConfigurationColis conf){
@@ -530,23 +431,7 @@ public class EscrimDAO {
 		return true;
 	}
 	
-	// Update une Designation Generique dans la BDD
-	public boolean UpdateDesignationGenerique(DesignationGenerique dg){
-		Connect();
-		
-		try {
-			PreparedStatement statement = connexion.prepareStatement(_updateDesignationGenerique);
-			statement.setString(1, dg.Designation);
-			statement.setInt(2, dg.Id);
-			
-			ResultSet resultat = statement.executeQuery();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
+	
 		
 
 	// Update une configuration dans la BDD
@@ -592,22 +477,6 @@ public class EscrimDAO {
 			return true;
 		}
 		
-	// Delete une Secteur dans la BDD
-	public boolean DeleteSecteur(int sec_id){
-		Connect();
-		
-		try {
-			PreparedStatement statement = connexion.prepareStatement(_deleteSecteur);
-			statement.setInt(1, sec_id);
-			
-			ResultSet resultat = statement.executeQuery();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
 		
 	// Delete une Designation Generique dans la BDD
 	public boolean DeleteDesignationGenerique(int dg_id){
@@ -642,144 +511,13 @@ public class EscrimDAO {
 		return true;
 	}
 	
-	// Delete toutes les lignes qui lie les colis a une configuration dans la BDD
-	public boolean DeleteConfFromConfigurationColis(int conf_id){
-		Connect();
-		
-		try {
-			PreparedStatement statement = connexion.prepareStatement(_deleteConfFromConfiguration_Colis);
-			statement.setInt(1, conf_id);
-			
-			ResultSet resultat = statement.executeQuery();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
 	
-	// Delete la jointure liant un colis à sa configuration
-	public boolean DeleteColisFromConfigurationColis(int colis_id){
-		Connect();
-		
-		try {
-			PreparedStatement statement = connexion.prepareStatement(_deleteColisFromConfiguration_Colis);
-			statement.setInt(1, colis_id);
-			
-			ResultSet resultat = statement.executeQuery();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
-	
-	
-	// Delete la jointure liant un medicament à son colis
-	public boolean DeleteMedicamentFromMedicamentColis(int med_id){
-		Connect();
-		
-		try {
-			PreparedStatement statement = connexion.prepareStatement(_deleteMedicamentFromMedicament_Colis);
-			statement.setInt(1, med_id);
-			
-			ResultSet resultat = statement.executeQuery();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
-	
-	// Delete la jointure liant un colis à sa configuration
-	public boolean DeleteColisFromMedicamentColis(int colis_id){
-		Connect();
-		
-		try {
-			PreparedStatement statement = connexion.prepareStatement(_deleteColisFromMedicament_Colis);
-			statement.setInt(1, colis_id);
-			
-			ResultSet resultat = statement.executeQuery();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
 
 	
-	// Delete la jointure liant un medicament à son colis
-	public boolean DeleteObjetFromObjetColis(int obj_id){
-		Connect();
-		
-		try {
-			PreparedStatement statement = connexion.prepareStatement(_deleteObjetFromObjet_Colis);
-			statement.setInt(1, obj_id);
-			
-			ResultSet resultat = statement.executeQuery();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
 	
-	// Delete la jointure liant un colis à sa configuration
-	public boolean DeleteColisFromObjetColis(int colis_id){
-		Connect();
-		
-		try {
-			PreparedStatement statement = connexion.prepareStatement(_deleteColisFromObjet_Colis);
-			statement.setInt(1, colis_id);
-			
-			ResultSet resultat = statement.executeQuery();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
 
 	
-	// Delete la jointure liant un medicament à son colis
-	public boolean DeleteOutilFromOutilColis(int outil_id){
-		Connect();
-		
-		try {
-			PreparedStatement statement = connexion.prepareStatement(_deleteOutilFromOutil_Colis);
-			statement.setInt(1, outil_id);
-			
-			ResultSet resultat = statement.executeQuery();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
 	
-	// Delete la jointure liant un colis à sa configuration
-	public boolean DeleteColisFromOutilColis(int colis_id){
-		Connect();
-		
-		try {
-			PreparedStatement statement = connexion.prepareStatement(_deleteColisFromOutil_Colis);
-			statement.setInt(1, colis_id);
-			
-			ResultSet resultat = statement.executeQuery();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
 
 	// -----------------------
 	// Connections Handlers
@@ -848,53 +586,17 @@ public class EscrimDAO {
 	private static String _insertOption= "INSERT INTO options (options_Id, options_Designation) VALUES ( ?, ?)";
 	private static String _insertTypeColis = "INSERT INTO typecolis (typeColis_Id, typeColis_Designation, hauteur, largeur, longueur) VALUES ( ?, ?, ?, ?, ?)";
 	private static String _insertConfiguration= "INSERT INTO configuration (config_Id, config_Designation) VALUES ( ?, ?)";
-	private static String _insertSecteur= "INSERT INTO secteur (secteur_Id, secteur_Designation, Dgenerique_Id) VALUES ( ?, ?, ?)";
-	private static String _insertDesignationGenerique= "INSERT INTO designation_generique (Dgenerique_Id, Dgenerique_Designation) VALUES ( ?, ?)";
 	
-	// -----------------------------
-	// Insert Join Queries
-	// -----------------------------
-	
-	private static String _insertConfiguration_Colis = "INSERT INTO configuration_colis ( config_Id, colis_Id) VALUES ( ?, ?)";
-	private static String _insertMedicament_Colis = "INSERT INTO medicament_colis ( medicament_Id, colis_Id) VALUES ( ?, ?)";
-	private static String _insertObjet_Colis = "INSERT INTO objet_colis ( objet_Id, colis_Id) VALUES ( ?, ?)";
-	private static String _insertOutil_Colis = "INSERT INTO outil_colis ( outil_Id, colis_Id) VALUES ( ?, ?)";
-	
-	// -----------------------------
-	// Update Queries
-	// -----------------------------
-	
-	private static String _updateOption= "UPDATE option SET options_Designation = ? WHERE options_Id = ?";
-	private static String _updateTypeColis = "UPDATE typecolis SET typeColis_Designation = ?, hauteur = ?, largeur = ?, longueur = ? WHERE typeColis_Id = ?";
-	private static String _updateConfiguration = "UPDATE configuration SET config_Designation = ? WHERE config_Id = ?";
-	private static String _updateSecteur = "UPDATE configuration SET secteur_Designation = ?, Dgenerique_Id = ? WHERE secteur_Id = ?";
-	private static String _updateDesignationGenerique = "UPDATE configuration SET Dgenerique_Designation = ? WHERE Dgenerique_Id = ?";
-	
-	// -----------------------------
-	// Delete Queries
-	// -----------------------------
-	
-	private static String _deleteOption= "DELETE FROM options WHERE options_Id = ?";
-	private static String _deleteTypeColis = "DELETE FROM typecolis WHERE typeColis_Id = ?";
-	private static String _deleteConfiguration= "DELETE FROM configuration WHERE config_Id = ?";
-	private static String _deleteSecteur= "DELETE FROM secteur WHERE secteur_Id = ?";
-	private static String _deleteDesignationGenerique= "DELETE FROM designation_generique WHERE Dgenerique_Id = ?";
-	
+
 	
 	// -----------------------------
 	// Delete Join Queries
 	// -----------------------------
 	
-	private static String _deleteConfFromConfiguration_Colis = "DELETE FROM configuration_colis WHERE conf_Id = ?";
-	private static String _deleteColisFromConfiguration_Colis = "DELETE FROM configuration_colis WHERE colis_Id = ?";
 	
-	private static String _deleteMedicamentFromMedicament_Colis = "DELETE FROM medicament_colis WHERE medicament_Id = ?";
-	private static String _deleteColisFromMedicament_Colis = "DELETE FROM medicament_colis WHERE colis_Id = ?";
 	
-	private static String _deleteObjetFromObjet_Colis = "DELETE FROM objet_colis WHERE objet_Id = ?";
-	private static String _deleteColisFromObjet_Colis = "DELETE FROM objet_colis WHERE colis_Id = ?";
 	
-	private static String _deleteOutilFromOutil_Colis = "DELETE FROM outil_colis WHERE outil_Id = ?";
-	private static String _deleteColisFromOutil_Colis = "DELETE FROM outil_colis WHERE colis_Id = ?";
+	
+	
 	
 }//EscrimDAO

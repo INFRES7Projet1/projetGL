@@ -11,13 +11,24 @@ public class MedicamentDAO extends DAO<Medicament> {
 		Medicament med = null;
 		
 		try {
-			PreparedStatement statement = this.connect.prepareStatement(_getOption);
+			PreparedStatement statement = this.connect.prepareStatement(_get);
 			statement.setInt(1, id);
 			
 			ResultSet resultat = statement.executeQuery();
-			resultat.next();
 			
-			med = new Medicament(id,  resultat.getString("options_Designation"));
+			// A verifier si necessaire
+			resultat.next();
+		    
+		    // Insertion des valeurs récupérées dans la BDD lié au médicament
+		    Medicament medicament = new Medicament(resultat.getInt( "medicament_Id"));
+		  
+		    medicament.Produit = resultat.getString("produit");
+		    medicament.Quantite = resultat.getInt("quantite");
+		    medicament.FormeDosage = resultat.getString("forme_dosage");
+		    medicament.Lot = resultat.getString("lot");
+		    medicament.Dlu = resultat.getDate("dlu");
+		    medicament.Dotation = resultat.getString("dotation");
+		    medicament.Dci =  new DCIDAO().find(resultat.getShort("dci_id"));
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -28,7 +39,7 @@ public class MedicamentDAO extends DAO<Medicament> {
 	
 	public Medicament create(Medicament medicament){
 		try {
-			PreparedStatement statement = this.connect.prepareStatement(_insertMedicament);
+			PreparedStatement statement = this.connect.prepareStatement(_insert);
 			statement.setInt(1, medicament.Id);
 			statement.setString(2, medicament.Produit);
 			statement.setInt(3, medicament.Quantite);
@@ -48,7 +59,7 @@ public class MedicamentDAO extends DAO<Medicament> {
 	
 	public Medicament update(Medicament medicament){
 		try {
-			PreparedStatement statement = this.connect.prepareStatement(_updateMedicament);
+			PreparedStatement statement = this.connect.prepareStatement(_update);
 			statement.setString(1, medicament.Produit);
 			statement.setInt(2, medicament.Quantite);
 			statement.setString(3, medicament.FormeDosage);
@@ -69,7 +80,7 @@ public class MedicamentDAO extends DAO<Medicament> {
 	
 	public void delete(Medicament medicament){
 		try {
-			PreparedStatement statement = this.connect.prepareStatement(_deleteMedicament);
+			PreparedStatement statement = this.connect.prepareStatement(_delete);
 			statement.setInt(1, medicament.Id);
 			ResultSet resultat = statement.executeQuery();
 			
@@ -79,57 +90,19 @@ public class MedicamentDAO extends DAO<Medicament> {
 		}
 	}
 
-	// Retourne la liste des Options
-	public List<Medicament> GetListeOptions(){
-		List<Medicament> result = new ArrayList<Medicament>();
-		
-		try {
-			PreparedStatement statement = this.connect.prepareStatement(_getListeOptions);
-			ResultSet resultat = statement.executeQuery();
-			
-			int i = 0;
-			while(resultat.next()){
-				Medicament opt = new Medicament(resultat.getInt("options_Id"),  resultat.getString("options_Designation"));
-				result.add(i, opt);
-				i++;
-			}			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return result;
-	}
-
 	// Retourne la liste des Medicaments
-	public List<Medicament> GetListeMedicaments(){
+	public List<Medicament> findListe(){
 		List<Medicament> result = new ArrayList<Medicament>();
 		
 		try {
-			PreparedStatement statement = this.connect.prepareStatement(_getListeMedicament);
+			PreparedStatement statement = this.connect.prepareStatement(_getListe);
 			ResultSet resultat = statement.executeQuery();
 			
 			int i = 0;
 			while(resultat.next()){
 				
-				// Insertion de la classe therapeutique à laquelle appartient le médicament
-				ClasseTherapeutique ct = new ClasseTherapeutique(resultat.getInt("therapeutique_Id"));
-			    ct.Designation = resultat.getString("therapeutique_Designation");
-				
-			    // Insertion du DCI à laquelle appartient le médicament
-			    DCI dci = new DCI(resultat.getShort("dci_id"));
-			    dci.Designation = resultat.getString("dci_Designation");
-			    dci.ClasseT = ct;
-			    
 			    // Insertion des valeurs récupérées dans la BDD lié au médicament
-			    Medicament medicament = new Medicament(resultat.getInt( "medicament_Id"));
-			  
-			    medicament.Produit = resultat.getString("produit");
-			    medicament.Quantite = resultat.getInt("quantite");
-			    medicament.FormeDosage = resultat.getString("forme_dosage");
-			    medicament.Lot = resultat.getString("lot");
-			    medicament.Dlu = resultat.getDate("dlu");
-			    medicament.Dotation = resultat.getString("dotation");
-			    medicament.Dci = dci;
+			    Medicament medicament = find(resultat.getInt( "medicament_Id"));
 			    
 			    result.add(i, medicament);
 			    i++;
@@ -152,27 +125,9 @@ public class MedicamentDAO extends DAO<Medicament> {
 			int i = 0; 
 			while ( resultat.next() ) {
 				
-				// Insertion de la classe therapeutique à laquelle appartient le médicament
-				ClasseTherapeutique ct = new ClasseTherapeutique(resultat.getInt("therapeutique_Id"));
-			    ct.Designation = resultat.getString("therapeutique_Designation");
-				
-			    // Insertion du DCI à laquelle appartient le médicament
-			    DCI dci = new DCI(resultat.getShort("dci_id"));
-			    dci.Designation = resultat.getString("dci_Designation");
-			    dci.ClasseT = ct;
-			    
 			    // Insertion des valeurs récupérées dans la BDD lié au médicament
-			    Medicament medicament = new Medicament(resultat.getInt( "medicament_Id"));
-			  
-			    medicament.Produit = resultat.getString("produit");
-			    medicament.Quantite = resultat.getInt("quantite");
-			    medicament.FormeDosage = resultat.getString("forme_dosage");
-			    medicament.Lot = resultat.getString("lot");
-			    medicament.Dlu = resultat.getDate("dlu");
-			    medicament.Dotation = resultat.getString("dotation");
-			    medicament.Dci = dci;
+			    Medicament medicament = find(resultat.getInt( "medicament_Id"));
 			    
-			    			    
 			    result.add(i, medicament);
 			    i++;
 			}
@@ -183,13 +138,35 @@ public class MedicamentDAO extends DAO<Medicament> {
 		return result;
 	}
 	
+
+	// Delete la jointure liant un medicament à son colis
+	public boolean DeleteMedicamentFromMedicamentColis(int med_id){
+
+		try {
+			PreparedStatement statement = this.connect.prepareStatement(_deleteMedicamentFromMedicament_Colis);
+			statement.setInt(1, med_id);
+			
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	
+	
 	// Medicament
-	private static String _getListeMedicament = "SELECT M.medicament_Id, produit, quantite, forme_dosage, lot, dlu, dotation, D.dci_Id, D.dci_Designation, CT.therapeutique_Id, CT.therapeutique_Designation FROM medicament M,  dci D, classe_therapeutique CT WHERE D.dci_Id = M.dci_Id AND D.therapeutique_Id = CT.therapeutique_Id";
-	private static String _getMedicamentInColis = "SELECT colis_Id, M.medicament_Id, produit, quantite, forme_dosage, lot, dlu, dotation, D.dci_Id, D.dci_Designation, CT.therapeutique_Id, CT.therapeutique_Designation FROM medicament M, medicament_colis MC, dci D, classe_therapeutique CT WHERE M.medicament_Id = MC.medicament_Id AND D.dci_Id = M.dci_Id AND D.therapeutique_Id = CT.therapeutique_Id AND colis_Id = ?";
+	private static String _get = "SELECT M.medicament_Id, produit, quantite, forme_dosage, lot, dlu, dotation, D.dci_Id, D.dci_Designation, CT.therapeutique_Id, CT.therapeutique_Designation FROM medicament M, dci D, classe_therapeutique CT WHERE D.dci_Id = M.dci_Id AND D.therapeutique_Id = CT.therapeutique_Id AND medicament_Id = ?";
+	private static String _getListe = "SELECT medicament_Id FROM medicament";
+	private static String _getMedicamentInColis = "SELECT colis_Id, M.medicament_Id FROM medicament M, medicament_colis MC WHERE M.medicament_Id = MC.medicament_Id AND colis_Id = ?";
 	
-	private static String _insertMedicament = "INSERT INTO medicament (medicament_Id, produit, quantite, forme_dosage, dlu, dotation, dci_Id) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
+	private static String _insert = "INSERT INTO medicament (medicament_Id, produit, quantite, forme_dosage, dlu, dotation, dci_Id) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
 	
-	private static String _updateMedicament = "UPDATE medicament SET produit = ?, quantite = ?, forme_dosage = ?, dlu = ?, dotation = ?, dci_Id = ? WHERE medicament_Id = ?";
+	private static String _update = "UPDATE medicament SET produit = ?, quantite = ?, forme_dosage = ?, dlu = ?, dotation = ?, dci_Id = ? WHERE medicament_Id = ?";
 	
-	private static String _deleteMedicament = "DELETE FROM medicament WHERE medicament_Id = ?";
+	private static String _delete = "DELETE FROM medicament WHERE medicament_Id = ?";
+	private static String _deleteMedicamentFromMedicament_Colis = "DELETE FROM medicament_colis WHERE medicament_Id = ?";
+	
 }

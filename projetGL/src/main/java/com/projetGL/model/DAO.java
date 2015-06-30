@@ -15,6 +15,13 @@ public abstract class DAO<T> {
 	public abstract T find(int id);
 	
 	/**
+	 * Permet de récupérer une liste d'objet via son ID
+	 * @param id
+	 * @return
+	 */
+	public abstract List<T> findListe();
+	
+	/**
 	 * Permet de créer une entrée dans la base de données
 	 * par rapport à un objet
 	 * @param obj

@@ -80,7 +80,7 @@ public class TypeColisDAO extends DAO<TypeColis> {
 		}
 	}
 
-	public List<TypeColis> GetListeTypeColis(){
+	public List<TypeColis> findListe(){
 		List<TypeColis> result = new ArrayList<TypeColis>();
 		
 		try {
@@ -91,11 +91,7 @@ public class TypeColisDAO extends DAO<TypeColis> {
 			int i = 0;
 			while(resultat.next()){
 			
-				TypeColis tc = new TypeColis(resultat.getInt("typeColis_Id"));
-				tc.Designation = resultat.getString("typeColis_Designation");
-				tc.Hauteur = resultat.getInt("hauteur");
-				tc.Largeur = resultat.getInt("largeur");
-				tc.Longueur = resultat.getInt("longueur");
+				TypeColis tc = find(resultat.getInt("typeColis_Id"));
 				
 				result.add(i, tc);
 				i++;

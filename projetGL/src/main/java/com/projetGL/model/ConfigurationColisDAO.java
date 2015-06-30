@@ -11,7 +11,7 @@ public class ConfigurationColisDAO extends DAO<ConfigurationColis> {
 
 	public ConfigurationColis create(ConfigurationColis conf) {
 		try {
-			PreparedStatement statement = this.connect.prepareStatement(_insertConfiguration);
+			PreparedStatement statement = this.connect.prepareStatement(_insert);
 			statement.setInt(1, conf.Id);
 			statement.setString(2, conf.Designation);
 			
@@ -31,7 +31,7 @@ public class ConfigurationColisDAO extends DAO<ConfigurationColis> {
 		ConfigurationColis result = null;
 		
 		try {
-			PreparedStatement statement = this.connect.prepareStatement(_getConfigurationContent);
+			PreparedStatement statement = this.connect.prepareStatement(_get);
 			statement.setInt(1, conf_id);
 			ResultSet resultat = statement.executeQuery();
 			
@@ -60,7 +60,7 @@ public class ConfigurationColisDAO extends DAO<ConfigurationColis> {
 		List<ConfigurationColis> result = new ArrayList<ConfigurationColis>();
 		int i = 0;
 		try {
-			PreparedStatement statement = this.connect.prepareStatement(_getListeConfiguration);
+			PreparedStatement statement = this.connect.prepareStatement(_getListe);
 			
 			ResultSet resultat = statement.executeQuery();
 			
@@ -78,7 +78,7 @@ public class ConfigurationColisDAO extends DAO<ConfigurationColis> {
 	}
 	
 	// Retourne la liste de toute les Configurations avec la liste des Colis
-	public List<ConfigurationColis> GetAllConfiguration()
+	public List<ConfigurationColis> findListe()
 	{
 		List<ConfigurationColis> result = GetListeConfiguration();
 		
@@ -98,7 +98,7 @@ public class ConfigurationColisDAO extends DAO<ConfigurationColis> {
 	public ConfigurationColis update(ConfigurationColis conf) {
 		ConfigurationColis co = null;
 		try {
-			PreparedStatement statement = this.connect.prepareStatement(_updateConfiguration);
+			PreparedStatement statement = this.connect.prepareStatement(_update);
 			statement.setString(1, conf.Designation);
 			statement.setInt(2, conf.Id);
 			
@@ -112,11 +112,10 @@ public class ConfigurationColisDAO extends DAO<ConfigurationColis> {
 		return co;
 	}
 
-
 	public void delete(ConfigurationColis conf) {
 
 		try {
-			PreparedStatement statement = this.connect.prepareStatement(_deleteConfiguration);
+			PreparedStatement statement = this.connect.prepareStatement(_delete);
 			statement.setInt(1, conf.Id);
 			
 			ResultSet resultat = statement.executeQuery();
@@ -126,18 +125,50 @@ public class ConfigurationColisDAO extends DAO<ConfigurationColis> {
 		}
 	}
 	
+	// Insert un colis dans la BDD et le lie à une configuration
+	public boolean InsertColisInConfiguration(Colis colis, int conf_id){
+		try {
+			if (new ColisDAO().find(colis.Id) != null){
+				PreparedStatement statement = this.connect.prepareStatement(_insertConfiguration_Colis);
+				statement.setInt(1, conf_id);
+				statement.setInt(2, colis.Id);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	// Delete toutes les lignes qui lie les colis a une configuration dans la BDD
+	public boolean DeleteConfFromConfigurationColis(int conf_id){
+		try {
+			PreparedStatement statement = this.connect.prepareStatement(_deleteConfFromConfiguration_Colis);
+			statement.setInt(1, conf_id);
+			
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
 	// Configuration
-	private static String _getListeConfiguration = "SELECT * FROM configuration;";
-	private static String _getConfigurationContent = "SELECT CC.config_Id, CO.config_Designation, C.colis_Id FROM configuration CO, configuration_colis CC, colis C WHERE CC.colis_Id = C.colis_Id AND CO.config_Id = CC.config_Id AND CC.config_Id = ?;";
+	private static String _getListe = "SELECT * FROM configuration;";
+	private static String _get = "SELECT CC.config_Id, CO.config_Designation, C.colis_Id FROM configuration CO, configuration_colis CC, colis C WHERE CC.colis_Id = C.colis_Id AND CO.config_Id = CC.config_Id AND CC.config_Id = ?;";
 		
 		
 	//Insert Colis
-	private static String _insertConfiguration= "INSERT INTO configuration (config_Id, config_Designation) VALUES ( ?, ?)";
+	private static String _insertConfiguration_Colis = "INSERT INTO configuration_colis ( config_Id, colis_Id) VALUES ( ?, ?)";
+	private static String _insert = "INSERT INTO configuration (config_Id, config_Designation) VALUES ( ?, ?)";
 	
 	// Update Colis
-	private static String _updateConfiguration = "UPDATE configuration SET config_Designation = ? WHERE config_Id = ?";
+	private static String _update = "UPDATE configuration SET config_Designation = ? WHERE config_Id = ?";
 	
 	// Delete Colis
-	private static String _deleteConfiguration= "DELETE FROM configuration WHERE config_Id = ?";
+	private static String _delete = "DELETE FROM configuration WHERE config_Id = ?";
+	private static String _deleteConfFromConfiguration_Colis = "DELETE FROM configuration_colis WHERE conf_Id = ?";
+
 	
 }

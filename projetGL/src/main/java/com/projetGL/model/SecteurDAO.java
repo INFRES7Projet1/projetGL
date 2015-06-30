@@ -1,0 +1,106 @@
+package com.projetGL.model;
+
+import java.sql.*;
+import java.util.*;
+
+public class SecteurDAO extends DAO<Secteur> {
+
+	public Connection connect = ConnectionMySQL.getInstance();
+	
+	public Secteur find(int id){
+		Secteur dg = null;
+		
+		try{
+			PreparedStatement statement = this.connect.prepareStatement(_get);
+			statement.setInt(1, id);
+			ResultSet resultat = statement.executeQuery();
+			
+			dg = new Secteur(resultat.getInt("secteur_Id"));
+		    dg.Designation = resultat.getString("secteur_Designation");
+		    dg.DesignationGenerique = new DesignationGeneriqueDAO().find(resultat.getInt("Dgenerique_Id"));
+		    
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return dg;
+		
+	}
+	
+	public Secteur create(Secteur sec){
+
+		try {
+			PreparedStatement statement = this.connect.prepareStatement(_insert);
+			statement.setInt(1, sec.Id);
+			statement.setString(2, sec.Designation);
+			statement.setInt(3, sec.DesignationGenerique.Id);
+			ResultSet resultat = statement.executeQuery();
+			
+			sec = find(sec.Id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return sec;
+	}
+	
+	public Secteur update(Secteur sec){
+		try {
+			PreparedStatement statement = this.connect.prepareStatement(_update);
+			statement.setString(1, sec.Designation);
+			statement.setInt(2, sec.DesignationGenerique.Id);
+			statement.setInt(3, sec.Id);
+			
+			ResultSet resultat = statement.executeQuery();
+			
+			sec = find(sec.Id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return sec;
+	}
+	
+	public void delete(Secteur sec){
+		try {
+			PreparedStatement statement = this.connect.prepareStatement(_delete);
+			statement.setInt(1, sec.Id);
+			
+			ResultSet resultat = statement.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// Retourne la liste des Secteur
+	public List<Secteur> findListe(){
+		List<Secteur> result = new ArrayList<Secteur>();
+		
+		try {
+			PreparedStatement statement = this.connect.prepareStatement(_getListe);
+			ResultSet resultat = statement.executeQuery();
+			
+			int i = 0;
+			while(resultat.next()){
+				
+				// Insertion de la classe therapeutique à laquelle appartient le médicament
+				Secteur sec = find(resultat.getInt("secteur_Id"));
+				
+			    result.add(i, sec);
+			    i++;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	// Options
+	private static String _getListe = "SELECT secteur_Id FROM secteur"; 		
+	private static String _get = "SELECT * FROM secteur WHERE secteur_Id = ?"; 	
+
+	private static String _insert = "INSERT INTO secteur (secteur_Id, secteur_Designation, Dgenerique_Id) VALUES ( ?, ?, ?)";
+	private static String _update = "UPDATE configuration SET secteur_Designation = ?, Dgenerique_Id = ? WHERE secteur_Id = ?";
+	private static String _delete = "DELETE FROM secteur WHERE secteur_Id = ?";
+	
+	
+}
