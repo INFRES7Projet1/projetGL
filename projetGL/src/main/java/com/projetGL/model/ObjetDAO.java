@@ -29,11 +29,12 @@ public class ObjetDAO extends DAO<Objet> {
 	public Objet create(Objet objet){
 		try {
 			PreparedStatement statement = this.connect.prepareStatement(_insert);
-			statement.setInt(1, objet.Id);
-			statement.setString(2, objet.Designation);
-			ResultSet resultat = statement.executeQuery();
+			statement.setString(1, objet.Designation);
 			
-			objet = find(objet.Id);
+			if(statement.executeUpdate() != 0)
+				objet = find(objet.Id);
+			else
+				objet = null;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -48,9 +49,10 @@ public class ObjetDAO extends DAO<Objet> {
 			statement.setString( 1, objet.Designation);
 			statement.setInt( 2, objet.Id);
 			
-			ResultSet resultat = statement.executeQuery();
-			
-			objet = find(objet.Id);
+			if(statement.executeUpdate() != 0)
+				objet = find(objet.Id);
+			else
+				objet = null;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -62,8 +64,8 @@ public class ObjetDAO extends DAO<Objet> {
 		try {
 			PreparedStatement statement = this.connect.prepareStatement(_delete);
 			statement.setInt(1, objet.Id);
-			ResultSet resultat = statement.executeQuery();
-			
+
+			statement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -77,7 +79,7 @@ public class ObjetDAO extends DAO<Objet> {
 			PreparedStatement statement = this.connect.prepareStatement(_deleteObjetFromObjet_Colis);
 			statement.setInt(1, obj_id);
 			
-			ResultSet resultat = statement.executeQuery();
+			statement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -137,7 +139,7 @@ public class ObjetDAO extends DAO<Objet> {
 	private static String _getListe = "SELECT objet_Id FROM objet; ";
 	private static String _getObjetsInColis = "SELECT colis_Id, O.objet_Id FROM objet O, objet_colis OC WHERE O.objet_Id = OC.objet_Id AND colis_Id = ?";
 	
-	private static String _insert = "INSERT INTO objet (objet_Id, objet_Designation) VALUES ( ?, ?)";
+	private static String _insert = "INSERT INTO objet ( objet_Designation) VALUES ( ?)";
 	
 	private static String _update = "UPDATE objet SET objet_Designation = ? WHERE objet_Id = ? ";
 	

@@ -31,11 +31,12 @@ public class DesignationGeneriqueDAO extends DAO<DesignationGenerique> {
 
 		try {
 			PreparedStatement statement = this.connect.prepareStatement(_insert);
-			statement.setInt(1, dg.Id);
-			statement.setString(2, dg.Designation);
-			ResultSet resultat = statement.executeQuery();
-			
-			dg = find(dg.Id);
+			statement.setString(1, dg.Designation);
+
+			if(statement.executeUpdate() != 0)
+				dg = find(dg.Id);
+			else
+				dg = null;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -50,9 +51,10 @@ public class DesignationGeneriqueDAO extends DAO<DesignationGenerique> {
 			statement.setString(1, dg.Designation);
 			statement.setInt(2, dg.Id);
 			
-			ResultSet resultat = statement.executeQuery();
-			
-			dg = find(dg.Id);
+			if(statement.executeUpdate() != 0)
+				dg = find(dg.Id);
+			else
+				dg = null;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -65,7 +67,8 @@ public class DesignationGeneriqueDAO extends DAO<DesignationGenerique> {
 		try {
 			PreparedStatement statement = this.connect.prepareStatement(_delete);
 			statement.setInt(1, dg.Id);
-			ResultSet resultat = statement.executeQuery();
+			
+			statement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -100,8 +103,8 @@ public class DesignationGeneriqueDAO extends DAO<DesignationGenerique> {
 	private static String _getListe = "SELECT Dgenerique_Id FROM designation_generique"; // TODO
 	private static String _get = "SELECT * FROM designation_generique WHERE Dgenerique_Id = ?"; // TODO
 
-	private static String _insert = "INSERT INTO designation_generique (Dgenerique_Id, Dgenerique_Designation) VALUES ( ?, ?)";
-	private static String _update = "UPDATE configuration SET Dgenerique_Designation = ? WHERE Dgenerique_Id = ?";
+	private static String _insert = "INSERT INTO designation_generique ( Dgenerique_Designation) VALUES ( ?)";
+	private static String _update = "UPDATE designation_generique SET Dgenerique_Designation = ? WHERE Dgenerique_Id = ?";
 	private static String _delete = "DELETE FROM designation_generique WHERE Dgenerique_Id = ?";
 	
 	

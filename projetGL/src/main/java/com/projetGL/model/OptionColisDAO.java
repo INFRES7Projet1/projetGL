@@ -29,11 +29,12 @@ public class OptionColisDAO extends DAO<OptionColis> {
 		
 		try {
 			PreparedStatement statement = this.connect.prepareStatement(_insert);
-			statement.setInt(1, op.Id);
-			statement.setString(2, op.Designation);
-			ResultSet resultat = statement.executeQuery();
+			statement.setString(1, op.Designation);
 			
-			op = find(op.Id);
+			if(statement.executeUpdate() != 0)
+				op = find(op.Id);
+			else
+				op = null;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -46,9 +47,11 @@ public class OptionColisDAO extends DAO<OptionColis> {
 			PreparedStatement statement = this.connect.prepareStatement(_update);
 			statement.setString(1, op.Designation);
 			statement.setInt(2, op.Id);
-			ResultSet resultat = statement.executeQuery();
 			
-			op = find(op.Id);
+			if(statement.executeUpdate() != 0)
+				op = find(op.Id);
+			else
+				op = null;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -61,7 +64,7 @@ public class OptionColisDAO extends DAO<OptionColis> {
 			PreparedStatement statement = this.connect.prepareStatement(_delete);
 			statement.setInt(1, op.Id);
 			
-			ResultSet resultat = statement.executeQuery();			
+			statement.executeUpdate();			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -91,7 +94,7 @@ public class OptionColisDAO extends DAO<OptionColis> {
 	private static String _getListe = "SELECT options_Id FROM options;";
 	private static String _get = "SELECT options_Id, options_Designation FROM options WHERE options_Id = ?";
 
-	private static String _insert = "INSERT INTO options (options_Id, options_Designation) VALUES ( ?, ?)";
-	private static String _update = "UPDATE option SET options_Designation = ? WHERE options_Id = ?";
+	private static String _insert = "INSERT INTO options (options_Designation) VALUES ( ?)";
+	private static String _update = "UPDATE options SET options_Designation = ? WHERE options_Id = ?";
 	private static String _delete = "DELETE FROM options WHERE options_Id = ?";
 }

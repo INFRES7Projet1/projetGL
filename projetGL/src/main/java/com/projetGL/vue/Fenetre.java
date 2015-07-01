@@ -41,63 +41,89 @@ public class Fenetre {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					EscrimDAO database = new EscrimDAO();
+					/*
+					MedicamentDAO meddao = new MedicamentDAO();
+					Medicament med = meddao.find(11);
+					System.out.println(med.toString());
+					med.Produit= "Doliprane 9001";
+					meddao.delete(med);
 					
-					/*List<Colis> res = database.GetAllColis();
-					for(Colis col : res){
-						System.out.println(col.toString());
-					}*/
 					
-					/*ConfigurationColis conf = database.GetConfigurationContent(1);
-					System.out.println(conf.toString());*/
+					ClasseTherapeutiqueDAO ctDAO = new ClasseTherapeutiqueDAO();
+					ClasseTherapeutique ct = ctDAO.find(7);
+					ct.Designation = "Cardio Electrolytes";
+					ctDAO.delete(ct);
+					
+					ColisDAO coDAO = new ColisDAO();
+					Colis co = coDAO.find(6);
+					co.Designation = "Cardiology";
+					coDAO.delete(co);
+					
+					
+					ConfigurationColisDAO ccDAO = new ConfigurationColisDAO();
+					ConfigurationColis cc = ccDAO.find(2);
+					cc.Designation = "Tourbillon";
+					ccDAO.delete(cc);
+					
+					DCIDAO dciDAO = new DCIDAO();
+					DCI dci = dciDAO.find(11);
+					dci.Designation = "Acide Atro-pinepinemique";
+					dciDAO.delete(dci);
+				
+					DesignationGeneriqueDAO dgDAO = new DesignationGeneriqueDAO();
+					DesignationGenerique dg = dgDAO.find(5);
+					dg.Designation = "Soutien Infectant";
+					dgDAO.delete(dg);
+					
+					ObjetDAO obDAO = new ObjetDAO();
+					Objet ob = obDAO.find(10);
+					ob.Designation = "Echelle dépliable";
+					obDAO.delete(ob);
+					
+					OutilDAO ouDAO = new OutilDAO();
+					Outil ou = ouDAO.find(10);
+					ou.Designation = "Defibrilateur Pre-Mortem";
+					ouDAO.delete(ou);
+					
+					OptionColisDAO opDAO = new OptionColisDAO();
+					OptionColis op = opDAO.find(4);
+					op.Designation = "Pays Tempéré";
+					opDAO.delete(op);
+					
+				
+					TypeColisDAO tpDAO = new TypeColisDAO();
+					TypeColis tp = tpDAO.find(4);
+					tp.Designation = "BAG";
+					tpDAO.delete(tp);
+					
+					SecteurDAO secDAO = new SecteurDAO();
+					Secteur sec = secDAO.find(10);
+					sec.Designation = "(G) Bloc opératoire 4";
+					secDAO.delete(sec);
+					
+					
+					ConfigurationColisDAO ccDAO = new ConfigurationColisDAO();
+					//ccDAO.InsertColisInConfiguration(1,2);
+					ccDAO.DeleteConfFromConfigurationColis(2);
+					
+					ColisDAO ccDAO = new ColisDAO();
+					ccDAO.DeleteColisFromMedicamentColis(6);
+					ccDAO.DeleteColisFromObjetColis(6);
+					ccDAO.DeleteColisFromOutilColis(6);
+					/*
+					ccDAO.InsertMedicamentInColis(1,6);
+					
+					ccDAO.InsertObjetInColis(1,6);*/
 					
 					/*
-					List<ConfigurationColis> res = database.GetAllConfiguration();
-					for(ConfigurationColis config : res){
-						System.out.println(config.toString());
-					}
-					
-					List<OptionColis> l = database.GetListeOptions();
-					for(OptionColis opt : l){
-						System.out.println(opt.toString());
-					}
-					
-					List<Medicament> lm = database.GetListeMedicaments();
-					for(Medicament med : lm){
-						System.out.println(med.toString());
-					}
-					
-					List<Objet> lo = database.GetListeObjets();
-					for(Objet ob : lo){
-						System.out.println(ob.toString());
-					}
-					
-					List<Outil> lou = database.GetListeOutils();
-					for(Outil ou : lou){
-						System.out.println(ou.toString());
-					}
-					
-					List<TypeColis> ltc = database.GetListeTypeColis();
-					for(TypeColis tc : ltc){
-						System.out.println(tc.toString());
-					}*/
-					
-					MedicamentDAO meddao = new MedicamentDAO();
-					Medicament med = new Medicament();
-					med = meddao.find(0);
-					
-					System.out.println(med.toString());
-					
 					ColisDAO cDAO = new ColisDAO();
 					Colis c = cDAO.find(4);
-					
 					System.out.println(c.toString());
 					
 					ConfigurationColisDAO ccDAO = new ConfigurationColisDAO();
 					ConfigurationColis cc = ccDAO.find(1);
-					
 					System.out.println(cc.toString());
-					
+					*/
 					// DB
 					Fenetre window = new Fenetre();
 					window.frame.setVisible(true);

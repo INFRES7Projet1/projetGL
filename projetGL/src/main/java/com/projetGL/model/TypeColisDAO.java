@@ -35,14 +35,15 @@ public class TypeColisDAO extends DAO<TypeColis> {
 		
 		try {
 			PreparedStatement statement = this.connect.prepareStatement(_insertTypeColis);
-			statement.setInt(1, tc.Id);
-			statement.setString(2, tc.Designation);
-			statement.setInt(3, tc.Hauteur);
-			statement.setInt(4, tc.Largeur);
-			statement.setInt(5, tc.Longueur);
-			ResultSet resultat = statement.executeQuery();
+			statement.setString(1, tc.Designation);
+			statement.setInt(2, tc.Hauteur);
+			statement.setInt(3, tc.Largeur);
+			statement.setInt(4, tc.Longueur);
 			
-			tc = find(tc.Id);
+			if(statement.executeUpdate() != 0)
+				tc = find(tc.Id);
+			else
+				tc = null;
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -61,7 +62,10 @@ public class TypeColisDAO extends DAO<TypeColis> {
 			statement.setInt(4, tc.Longueur);
 			statement.setInt(5, tc.Id);
 			
-			ResultSet resultat = statement.executeQuery();
+			if(statement.executeUpdate() != 0)
+				tc = find(tc.Id);
+			else
+				tc = null;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -74,7 +78,7 @@ public class TypeColisDAO extends DAO<TypeColis> {
 		try {
 			PreparedStatement statement = this.connect.prepareStatement(_deleteTypeColis);
 			statement.setInt(1, tc.Id);
-			ResultSet resultat = statement.executeQuery();
+			statement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -108,7 +112,7 @@ public class TypeColisDAO extends DAO<TypeColis> {
 	private static String _getListeTypeColis = "SELECT * FROM TypeColis";
 	private static String _getTypeInColis = "SELECT * FROM TypeColis WHERE typeColis_Id = ?";
 
-	private static String _insertTypeColis = "INSERT INTO typecolis (typeColis_Id, typeColis_Designation, hauteur, largeur, longueur) VALUES ( ?, ?, ?, ?, ?)";
+	private static String _insertTypeColis = "INSERT INTO typecolis ( typeColis_Designation, hauteur, largeur, longueur) VALUES ( ?, ?, ?, ?)";
 	
 	private static String _updateTypeColis = "UPDATE typecolis SET typeColis_Designation = ?, hauteur = ?, largeur = ?, longueur = ? WHERE typeColis_Id = ?";
 	

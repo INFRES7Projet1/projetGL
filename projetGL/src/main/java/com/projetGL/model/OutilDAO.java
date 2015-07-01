@@ -33,14 +33,15 @@ public class OutilDAO extends DAO<Outil> {
 	public Outil create(Outil outil){
 		try {
 			PreparedStatement statement = this.connect.prepareStatement(_insert);
-			statement.setInt(1, outil.Id);
-			statement.setString(2, outil.Designation);
-			statement.setInt(3, outil.Quantite);
-			statement.setDate(4, (java.sql.Date)outil.Dlu);
-			statement.setString(5, outil.Reference);
-			ResultSet resultat = statement.executeQuery();
+			statement.setString(1, outil.Designation);
+			statement.setInt(2, outil.Quantite);
+			statement.setDate(3, (java.sql.Date)outil.Dlu);
+			statement.setString(4, outil.Reference);
 			
-			outil = find(outil.Id);
+			if(statement.executeUpdate() != 0)
+				outil = find(outil.Id);
+			else
+				outil = null;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -50,15 +51,16 @@ public class OutilDAO extends DAO<Outil> {
 	public Outil update(Outil outil){
 		try {
 			PreparedStatement statement = this.connect.prepareStatement(_update);
-			statement.setString(2, outil.Designation);
-			statement.setInt(3, outil.Quantite);
-			statement.setDate(4, (java.sql.Date)outil.Dlu);
-			statement.setString(5, outil.Reference);
-			statement.setInt(1, outil.Id);
+			statement.setString(1, outil.Designation);
+			statement.setInt(2, outil.Quantite);
+			statement.setDate(3, (java.sql.Date)outil.Dlu);
+			statement.setString(4, outil.Reference);
+			statement.setInt(5, outil.Id);
 			
-			ResultSet resultat = statement.executeQuery();
-			
-			outil = find(outil.Id);
+			if(statement.executeUpdate() != 0)
+				outil = find(outil.Id);
+			else
+				outil = null;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -71,7 +73,7 @@ public class OutilDAO extends DAO<Outil> {
 			PreparedStatement statement = this.connect.prepareStatement(_delete);
 			statement.setInt(1, outil.Id);
 			
-			ResultSet resultat = statement.executeQuery();
+			statement.executeUpdate();
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -85,7 +87,8 @@ public class OutilDAO extends DAO<Outil> {
 			PreparedStatement statement = this.connect.prepareStatement(_deleteOutilFromOutil_Colis);
 			statement.setInt(1, outil_id);
 			
-			ResultSet resultat = statement.executeQuery();
+			statement.executeUpdate();
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -142,7 +145,7 @@ public class OutilDAO extends DAO<Outil> {
 	private static String _getListe = "SELECT * FROM outil;";
 	private static String _getOutilsInColis = "SELECT colis_Id, O.outil_Id FROM outil O, outil_colis OC WHERE O.outil_Id = OC.outil_Id AND colis_Id = ?";
 	
-	private static String _insert = "INSERT INTO outil (outil_Id, outil_Designation, quantite, dlu, reference) VALUES (?, ?, ?, ?, ?)";
+	private static String _insert = "INSERT INTO outil ( outil_Designation, quantite, dlu, reference) VALUES ( ?, ?, ?, ?)";
 	private static String _update = "UPDATE outil SET outil_Designation = ?, quantite = ?, dlu = ?, reference = ? WHERE outil_Id = ?";
 	private static String _delete = "DELETE FROM outil WHERE outil_Id = ?";
 	private static String _deleteOutilFromOutil_Colis = "DELETE FROM outil_colis WHERE outil_Id = ?";

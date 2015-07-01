@@ -28,11 +28,11 @@ public class ClasseTherapeutiqueDAO extends DAO<ClasseTherapeutique> {
 	public ClasseTherapeutique create(ClasseTherapeutique ct){
 		try {
 			PreparedStatement statement = this.connect.prepareStatement(_insert);
-			statement.setInt(1, ct.Id);
-			statement.setString(2, ct.Designation);
-			ResultSet resultat = statement.executeQuery();
-			
-			ct = find(ct.Id);
+			statement.setString(1, ct.Designation);
+			if(statement.executeUpdate() != 0)
+				ct = find(ct.Id);
+			else
+				ct = null;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -47,9 +47,10 @@ public class ClasseTherapeutiqueDAO extends DAO<ClasseTherapeutique> {
 			PreparedStatement statement = this.connect.prepareStatement(_update);
 			statement.setString( 1, ct.Designation);
 			statement.setInt( 2, ct.Id);
-			ResultSet resultat = statement.executeQuery();
-			
-			ct = find(ct.Id);
+			if(statement.executeUpdate() != 0)
+				ct = find(ct.Id);
+			else
+				ct = null;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -61,8 +62,8 @@ public class ClasseTherapeutiqueDAO extends DAO<ClasseTherapeutique> {
 		try {
 			PreparedStatement statement = this.connect.prepareStatement(_delete);
 			statement.setInt(1, ct.Id);
+			statement.executeUpdate();
 			
-			ResultSet resultat = statement.executeQuery();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -97,7 +98,7 @@ public class ClasseTherapeutiqueDAO extends DAO<ClasseTherapeutique> {
 	private static String _getListe = "SELECT therapeutique_Id FROM classe_therapeutique"; // TODO
 	private static String _get = "SELECT * FROM classe_therapeutique WHERE therapeutique_Id = ?"; // TODO
 
-	private static String _insert = "INSERT INTO classe_therapeutique (therapeutique_Id, therapeutique_Designation) VALUES ( ?, ?)";
+	private static String _insert = "INSERT INTO classe_therapeutique ( therapeutique_Designation) VALUES ( ?)";
 	private static String _update = "UPDATE classe_therapeutique SET therapeutique_Designation = ? WHERE therapeutique_Id = ?";
 	private static String _delete = "DELETE FROM classe_therapeutique WHERE therapeutique_Id = ?";
 	

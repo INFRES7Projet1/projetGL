@@ -20,9 +20,11 @@ public class ColisDAO extends DAO<Colis> {
 			statement.setString(5, colis.Affectataire);
 			statement.setInt(6, colis.Option.Id);
 			statement.setInt(7, colis.Type.Id);
-			ResultSet resultat = statement.executeQuery();
 			
-			colis = find(colis.Id);
+			if(statement.executeUpdate() != 0)
+				colis = find(colis.Id);
+			else
+				colis = null;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -101,13 +103,15 @@ public class ColisDAO extends DAO<Colis> {
 	}
 	
 	// Insert un outils dans la BDD et le lie au colis
-	public boolean InsertOutilInColis(Outil outil, int colis_id){
+	public boolean InsertOutilInColis(int outil_id, int colis_id){
 		
 		try {
-			if (new OutilDAO().find(outil.Id) != null){
+			if (new OutilDAO().find(outil_id) != null){
 				PreparedStatement statement = this.connect.prepareStatement(_insertOutil_Colis);
-				statement.setInt(1, outil.Id);
+				statement.setInt(1, outil_id);
 				statement.setInt(2, colis_id);
+				
+				statement.executeUpdate();
 			}
 			
 		} catch (SQLException e) {
@@ -118,13 +122,15 @@ public class ColisDAO extends DAO<Colis> {
 	}
 	
 	// Insert un medicament dans la BDD et le lie au colis
-	public boolean InsertMedicamentInColis(Medicament med, int colis_id){
+	public boolean InsertMedicamentInColis(int med_id, int colis_id){
 		
 		try {
-			if (new MedicamentDAO().find(med.Id) != null ){
+			if (new MedicamentDAO().find(med_id) != null ){
 				PreparedStatement statement = this.connect.prepareStatement(_insertMedicament_Colis);
-				statement.setInt(1, med.Id);
+				statement.setInt(1, med_id);
 				statement.setInt(2, colis_id);
+				
+				statement.executeUpdate();
 			}
 			
 		} catch (SQLException e) {
@@ -135,13 +141,15 @@ public class ColisDAO extends DAO<Colis> {
 	}
 	
 	// Insert un medicament dans la BDD et le lie au colis
-	public boolean InsertObjetInColis(Objet obj, int colis_id){
+	public boolean InsertObjetInColis(int obj_id, int colis_id){
 		
 		try {
-			if (new ObjetDAO().find(obj.Id) != null){
+			if (new ObjetDAO().find(obj_id) != null){
 				PreparedStatement statement = this.connect.prepareStatement(_insertObjet_Colis);
-				statement.setInt(1, obj.Id);
+				statement.setInt(1, obj_id);
 				statement.setInt(2, colis_id);
+				
+				statement.executeUpdate();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -155,15 +163,18 @@ public class ColisDAO extends DAO<Colis> {
 		try {
 			PreparedStatement statement = this.connect.prepareStatement(_update);
 			statement.setString(1, colis.Designation);
-			statement.setString(2, colis.Etat.toString());
+			System.out.println(colis.Etat.toString());
+			statement.setString(2, (String)colis.Etat.toString());
 			statement.setInt(3, colis.Poids);
 			statement.setString(4, colis.Affectataire);
 			statement.setInt(5, colis.Option.Id);
 			statement.setInt(6, colis.Type.Id);
 			statement.setInt(7, colis.Id);
-			ResultSet resultat = statement.executeQuery();
-
-			colis = find(colis.Id);
+			
+			if(statement.executeUpdate() != 0)
+				colis = find(colis.Id);
+			else
+				colis = null;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -179,7 +190,8 @@ public class ColisDAO extends DAO<Colis> {
 		try {
 			PreparedStatement statement = this.connect.prepareStatement(_delete);
 			statement.setInt(1, colis.Id);
-			ResultSet resultat = statement.executeQuery();
+			
+			statement.executeUpdate();
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -193,7 +205,7 @@ public class ColisDAO extends DAO<Colis> {
 			PreparedStatement statement = this.connect.prepareStatement(_deleteColisFromConfiguration_Colis);
 			statement.setInt(1, colis_id);
 			
-			ResultSet resultat = statement.executeQuery();
+			statement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -208,7 +220,7 @@ public class ColisDAO extends DAO<Colis> {
 			PreparedStatement statement = this.connect.prepareStatement(_deleteColisFromObjet_Colis);
 			statement.setInt(1, colis_id);
 			
-			ResultSet resultat = statement.executeQuery();
+			statement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -223,7 +235,7 @@ public class ColisDAO extends DAO<Colis> {
 			PreparedStatement statement = this.connect.prepareStatement(_deleteColisFromOutil_Colis);
 			statement.setInt(1, colis_id);
 			
-			ResultSet resultat = statement.executeQuery();
+			statement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -239,7 +251,7 @@ public class ColisDAO extends DAO<Colis> {
 			PreparedStatement statement = this.connect.prepareStatement(_deleteColisFromMedicament_Colis);
 			statement.setInt(1, colis_id);
 			
-			ResultSet resultat = statement.executeQuery();
+			statement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -257,13 +269,13 @@ public class ColisDAO extends DAO<Colis> {
 	private static String _get = "SELECT * FROM colis WHERE colis_Id = ?";
 		
 	//Insert Colis
-	private static String _insert = "INSERT INTO colis (colis_Id, designation, etat, poids, affectataire, option_Id, typeColis_Id) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
+	private static String _insert = "INSERT INTO colis (colis_Id, designation, etat, poids, affectataire, options_Id, typeColis_Id) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
 	private static String _insertMedicament_Colis = "INSERT INTO medicament_colis ( medicament_Id, colis_Id) VALUES ( ?, ?)";
 	private static String _insertObjet_Colis = "INSERT INTO objet_colis ( objet_Id, colis_Id) VALUES ( ?, ?)";
 	private static String _insertOutil_Colis = "INSERT INTO outil_colis ( outil_Id, colis_Id) VALUES ( ?, ?)";
 	
 	// Update Colis
-	private static String _update = "UPDATE colis SET WHERE medicament_Id = ?";
+	private static String _update = "UPDATE colis SET designation = ?, etat = ?, poids = ?, affectataire = ?, options_Id = ?, typeColis_Id = ? WHERE colis_Id = ?";
 	
 	// Delete Colis
 	private static String _delete = "DELETE FROM colis WHERE colis_Id = ?";

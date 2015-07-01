@@ -40,16 +40,19 @@ public class MedicamentDAO extends DAO<Medicament> {
 	public Medicament create(Medicament medicament){
 		try {
 			PreparedStatement statement = this.connect.prepareStatement(_insert);
-			statement.setInt(1, medicament.Id);
-			statement.setString(2, medicament.Produit);
-			statement.setInt(3, medicament.Quantite);
-			statement.setString(4, medicament.FormeDosage);
-			statement.setDate(5, (java.sql.Date)medicament.Dlu);
-			statement.setString(6, medicament.Dotation);
-			statement.setInt(7, medicament.Dci.Id);
-			ResultSet resultat = statement.executeQuery();
 			
-			medicament = find(medicament.Id);
+			statement.setString(1, medicament.Produit);
+			statement.setInt(2, medicament.Quantite);
+			statement.setString(3, medicament.FormeDosage);
+			statement.setDate(4, (java.sql.Date)medicament.Dlu);
+			statement.setString(5, medicament.Dotation);
+			statement.setInt(6, medicament.Dci.Id);
+			
+			if(statement.executeUpdate() != 0)
+				medicament = find(medicament.Id);
+			else
+				medicament = null;
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -68,9 +71,10 @@ public class MedicamentDAO extends DAO<Medicament> {
 			statement.setInt(6, medicament.Dci.Id);
 			statement.setInt(7, medicament.Id);
 			
-			ResultSet resultat = statement.executeQuery();
-			
-			medicament = find(medicament.Id);
+			if(statement.executeUpdate() != 0)
+				medicament = find(medicament.Id);
+			else
+				medicament = null;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -82,8 +86,8 @@ public class MedicamentDAO extends DAO<Medicament> {
 		try {
 			PreparedStatement statement = this.connect.prepareStatement(_delete);
 			statement.setInt(1, medicament.Id);
-			ResultSet resultat = statement.executeQuery();
-			
+
+			statement.executeUpdate();			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -146,7 +150,7 @@ public class MedicamentDAO extends DAO<Medicament> {
 			PreparedStatement statement = this.connect.prepareStatement(_deleteMedicamentFromMedicament_Colis);
 			statement.setInt(1, med_id);
 			
-			ResultSet resultat = statement.executeQuery();
+			statement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -162,7 +166,7 @@ public class MedicamentDAO extends DAO<Medicament> {
 	private static String _getListe = "SELECT medicament_Id FROM medicament";
 	private static String _getMedicamentInColis = "SELECT colis_Id, M.medicament_Id FROM medicament M, medicament_colis MC WHERE M.medicament_Id = MC.medicament_Id AND colis_Id = ?";
 	
-	private static String _insert = "INSERT INTO medicament (medicament_Id, produit, quantite, forme_dosage, dlu, dotation, dci_Id) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
+	private static String _insert = "INSERT INTO medicament ( produit, quantite, forme_dosage, dlu, dotation, dci_Id) VALUES ( ?, ?, ?, ?, ?, ?)";
 	
 	private static String _update = "UPDATE medicament SET produit = ?, quantite = ?, forme_dosage = ?, dlu = ?, dotation = ?, dci_Id = ? WHERE medicament_Id = ?";
 	

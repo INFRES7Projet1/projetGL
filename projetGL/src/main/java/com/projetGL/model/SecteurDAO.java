@@ -31,12 +31,14 @@ public class SecteurDAO extends DAO<Secteur> {
 
 		try {
 			PreparedStatement statement = this.connect.prepareStatement(_insert);
-			statement.setInt(1, sec.Id);
-			statement.setString(2, sec.Designation);
-			statement.setInt(3, sec.DesignationGenerique.Id);
-			ResultSet resultat = statement.executeQuery();
+			statement.setString(1, sec.Designation);
+			statement.setInt(2, sec.DesignationGenerique.Id);
 			
-			sec = find(sec.Id);
+			if(statement.executeUpdate() != 0)
+				sec = find(sec.Id);
+			else
+				sec = null;
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -51,9 +53,11 @@ public class SecteurDAO extends DAO<Secteur> {
 			statement.setInt(2, sec.DesignationGenerique.Id);
 			statement.setInt(3, sec.Id);
 			
-			ResultSet resultat = statement.executeQuery();
+			if(statement.executeUpdate() != 0)
+				sec = find(sec.Id);
+			else
+				sec = null;
 			
-			sec = find(sec.Id);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -66,7 +70,8 @@ public class SecteurDAO extends DAO<Secteur> {
 			PreparedStatement statement = this.connect.prepareStatement(_delete);
 			statement.setInt(1, sec.Id);
 			
-			ResultSet resultat = statement.executeQuery();
+			statement.executeUpdate();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -99,8 +104,8 @@ public class SecteurDAO extends DAO<Secteur> {
 	private static String _getListe = "SELECT secteur_Id FROM secteur"; 		
 	private static String _get = "SELECT * FROM secteur WHERE secteur_Id = ?"; 	
 
-	private static String _insert = "INSERT INTO secteur (secteur_Id, secteur_Designation, Dgenerique_Id) VALUES ( ?, ?, ?)";
-	private static String _update = "UPDATE configuration SET secteur_Designation = ?, Dgenerique_Id = ? WHERE secteur_Id = ?";
+	private static String _insert = "INSERT INTO secteur ( secteur_Designation, Dgenerique_Id) VALUES ( ?, ?)";
+	private static String _update = "UPDATE secteur SET secteur_Designation = ?, Dgenerique_Id = ? WHERE secteur_Id = ?";
 	private static String _delete = "DELETE FROM secteur WHERE secteur_Id = ?";
 	
 	
