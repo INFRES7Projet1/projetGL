@@ -102,18 +102,20 @@ public class Fenetre {
 					secDAO.delete(sec);
 					
 					
-					ConfigurationColisDAO ccDAO = new ConfigurationColisDAO();
-					//ccDAO.InsertColisInConfiguration(1,2);
-					ccDAO.DeleteConfFromConfigurationColis(2);
-					
 					ColisDAO ccDAO = new ColisDAO();
-					ccDAO.DeleteColisFromMedicamentColis(6);
-					ccDAO.DeleteColisFromObjetColis(6);
-					ccDAO.DeleteColisFromOutilColis(6);
-					/*
-					ccDAO.InsertMedicamentInColis(1,6);
+					ccDA
+					O.DeleteColisFromConfigurationColis(6);
+					*/
 					
-					ccDAO.InsertObjetInColis(1,6);*/
+					MedicamentDAO medDAO = new MedicamentDAO();
+					medDAO.DeleteMedicamentFromMedicamentColis(11);
+					
+					ObjetDAO obDAO = new ObjetDAO();
+					obDAO.DeleteObjetFromObjetColis(10);
+					
+					OutilDAO ouDAO = new OutilDAO();
+					ouDAO.DeleteOutilFromOutilColis(10);
+					
 					
 					/*
 					ColisDAO cDAO = new ColisDAO();
