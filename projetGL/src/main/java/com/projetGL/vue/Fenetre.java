@@ -86,7 +86,17 @@ public class Fenetre {
 					Medicament med = new Medicament();
 					med = meddao.find(0);
 					
-					med.toString();
+					System.out.println(med.toString());
+					
+					ColisDAO cDAO = new ColisDAO();
+					Colis c = cDAO.find(4);
+					
+					System.out.println(c.toString());
+					
+					ConfigurationColisDAO ccDAO = new ConfigurationColisDAO();
+					ConfigurationColis cc = ccDAO.find(1);
+					
+					System.out.println(cc.toString());
 					
 					// DB
 					Fenetre window = new Fenetre();

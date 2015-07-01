@@ -133,7 +133,7 @@ public class ObjetDAO extends DAO<Objet> {
 	
 
 	//Objet
-	private static String _get = "SELECT * FROME objet WHERE objet_Id = ?";
+	private static String _get = "SELECT * FROM objet WHERE objet_Id = ?";
 	private static String _getListe = "SELECT objet_Id FROM objet; ";
 	private static String _getObjetsInColis = "SELECT colis_Id, O.objet_Id FROM objet O, objet_colis OC WHERE O.objet_Id = OC.objet_Id AND colis_Id = ?";
 	

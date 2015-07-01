@@ -138,7 +138,7 @@ public class OutilDAO extends DAO<Outil> {
 	}
 	
 	//Outils 
-	private static String _get = "SELECT * FROM outil WHERE outil_Id";
+	private static String _get = "SELECT * FROM outil WHERE outil_Id = ?";
 	private static String _getListe = "SELECT * FROM outil;";
 	private static String _getOutilsInColis = "SELECT colis_Id, O.outil_Id FROM outil O, outil_colis OC WHERE O.outil_Id = OC.outil_Id AND colis_Id = ?";
 	
