@@ -9,6 +9,7 @@ public class EscrimDAO {
 	
 	private static EscrimDAO escrimDAO;
 	
+	//fonction creant l'unique instance de la classe EscrimDAO
 	public static EscrimDAO getInstance() {
 		if ( escrimDAO == null){
 			escrimDAO = new EscrimDAO();
@@ -304,6 +305,8 @@ public class EscrimDAO {
 			    if(colis != null){
 			    	result.add(i, colis);
 			    	i++;
+			    } else {
+			    	System.out.println("ça morche pas Aymerique !!");
 			    }
 			}
 		} catch (SQLException e) {
@@ -514,7 +517,7 @@ public class EscrimDAO {
 			
 			System.out.println("Driver O.K.");
 	
-			/* Connexion ï¿½ la base de donnï¿½es */
+			/* Connexion a la base de donnees */
 			String url = "jdbc:mysql://127.0.0.1:3306/db_escrim";
 			String utilisateur = "EscrimUser";
 			String motDePasse = "EscrimPassword";
@@ -526,7 +529,7 @@ public class EscrimDAO {
 			    /* ... */
 
 			} catch ( SQLException ex ) {
-			    /* Gï¿½rer les ï¿½ventuelles erreurs ici */
+			    /* Gerer les eventuelles erreurs ici */
 			    System.out.println("SQLException: " + ex.getMessage());
 			    System.out.println("SQLState: " + ex.getSQLState());
 			    System.out.println("VendorError: " + ex.getErrorCode());
