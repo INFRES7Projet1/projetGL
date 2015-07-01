@@ -15,11 +15,12 @@ public class DCIDAO extends DAO<DCI> {
 			PreparedStatement statement = this.connect.prepareStatement(_get);
 			statement.setInt(1, id);
 			ResultSet resultat = statement.executeQuery();
-			
-			dci = new DCI(resultat.getShort("dci_Id"));
-		    dci.Designation = resultat.getString("dci_Designation");
-		    dci.ClasseT = new ClasseTherapeutiqueDAO().find(resultat.getInt("therapeutique_Id"));
-		    
+			if (resultat.next())
+			{
+				dci = new DCI(resultat.getShort("dci_Id"));
+			    dci.Designation = resultat.getString("dci_Designation");
+			    dci.ClasseT = new ClasseTherapeutiqueDAO().find(resultat.getInt("therapeutique_Id"));
+			} 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

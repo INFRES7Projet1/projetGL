@@ -15,9 +15,8 @@ public class OptionColisDAO extends DAO<OptionColis> {
 			statement.setInt(1, id);
 			
 			ResultSet resultat = statement.executeQuery();
-			resultat.next();
-			
-			opt = new OptionColis(id,  resultat.getString("options_Designation"));
+			if (resultat.next())
+				opt = new OptionColis(id,  resultat.getString("options_Designation"));
 
 		} catch (SQLException e) {
 			e.printStackTrace();

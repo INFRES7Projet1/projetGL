@@ -8,21 +8,22 @@ public class SecteurDAO extends DAO<Secteur> {
 	public Connection connect = ConnectionMySQL.getInstance();
 	
 	public Secteur find(int id){
-		Secteur dg = null;
+		Secteur sec = null;
 		
 		try{
 			PreparedStatement statement = this.connect.prepareStatement(_get);
 			statement.setInt(1, id);
 			ResultSet resultat = statement.executeQuery();
-			
-			dg = new Secteur(resultat.getInt("secteur_Id"));
-		    dg.Designation = resultat.getString("secteur_Designation");
-		    dg.DesignationGenerique = new DesignationGeneriqueDAO().find(resultat.getInt("Dgenerique_Id"));
-		    
+			if (resultat.next())
+			{
+				sec = new Secteur(resultat.getInt("secteur_Id"));
+			    sec.Designation = resultat.getString("secteur_Designation");
+			    sec.DesignationGenerique = new DesignationGeneriqueDAO().find(resultat.getInt("Dgenerique_Id"));
+			}    
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return dg;
+		return sec;
 		
 	}
 	

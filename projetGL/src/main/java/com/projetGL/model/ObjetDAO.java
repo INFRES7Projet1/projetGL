@@ -14,13 +14,11 @@ public class ObjetDAO extends DAO<Objet> {
 			statement.setInt(1, id);
 			ResultSet resultat = statement.executeQuery();
 			 
-			resultat.next();
-				
-			obj = new Objet(resultat.getInt("objet_Id"));
-			
-			obj.Designation = resultat.getString("objet_Designation");
-				    
-			
+			if (resultat.next())
+			{
+				obj = new Objet(resultat.getInt("objet_Id"));
+				obj.Designation = resultat.getString("objet_Designation");
+			} 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

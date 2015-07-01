@@ -15,13 +15,14 @@ public class TypeColisDAO extends DAO<TypeColis> {
 			statement.setInt(1, id);
 			
 			ResultSet resultat = statement.executeQuery();
-			resultat.next();
-			
-			tc = new TypeColis(id);
-			tc.Designation = resultat.getString("typeColis_Designation");
-			tc.Hauteur = resultat.getInt("hauteur");
-			tc.Largeur = resultat.getInt("largeur");
-			tc.Longueur = resultat.getInt("longueur");
+			if (resultat.next())
+			{
+				tc = new TypeColis(id);
+				tc.Designation = resultat.getString("typeColis_Designation");
+				tc.Hauteur = resultat.getInt("hauteur");
+				tc.Largeur = resultat.getInt("largeur");
+				tc.Longueur = resultat.getInt("longueur");
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -15,9 +15,11 @@ public class DesignationGeneriqueDAO extends DAO<DesignationGenerique> {
 			statement.setInt(1, id);
 			ResultSet resultat = statement.executeQuery();
 			
-			dg = new DesignationGenerique(resultat.getInt("Dgenerique_Id"));
-		    dg.Designation = resultat.getString("Dgenerique_Designation");
-		    
+			if (resultat.next())
+			{
+				dg = new DesignationGenerique(resultat.getInt("Dgenerique_Id"));
+				dg.Designation = resultat.getString("Dgenerique_Designation");
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

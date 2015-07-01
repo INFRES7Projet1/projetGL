@@ -14,13 +14,14 @@ public class OutilDAO extends DAO<Outil> {
 			statement.setInt(1, id);
 			ResultSet resultat = statement.executeQuery();
 			 
-			resultat.next();
-				
-			outil = new Outil(resultat.getInt("outil_Id"));
-			outil.Designation = resultat.getString("outil_Designation");
-			outil.Quantite = resultat.getInt("quantite");
-			outil.Dlu = resultat.getDate("dlu");
-			outil.Reference = resultat.getString("reference");
+			if (resultat.next())
+			{
+				outil = new Outil(resultat.getInt("outil_Id"));
+				outil.Designation = resultat.getString("outil_Designation");
+				outil.Quantite = resultat.getInt("quantite");
+				outil.Dlu = resultat.getDate("dlu");
+				outil.Reference = resultat.getString("reference");
+			}
 				    
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

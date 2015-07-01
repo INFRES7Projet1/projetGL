@@ -13,9 +13,11 @@ public class ClasseTherapeutiqueDAO extends DAO<ClasseTherapeutique> {
 			PreparedStatement statement = this.connect.prepareStatement(_get);
 			statement.setInt(1, id);
 			ResultSet resultat = statement.executeQuery();
-			
-			ct = new ClasseTherapeutique(resultat.getInt("therapeutique_Id"));
-		    ct.Designation = resultat.getString("therapeutique_Designation");
+			if (resultat.next())
+			{
+				ct = new ClasseTherapeutique(resultat.getInt("therapeutique_Id"));
+			    ct.Designation = resultat.getString("therapeutique_Designation");
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

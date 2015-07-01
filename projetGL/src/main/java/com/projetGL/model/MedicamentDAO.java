@@ -17,19 +17,19 @@ public class MedicamentDAO extends DAO<Medicament> {
 			ResultSet resultat = statement.executeQuery();
 			
 			// A verifier si necessaire
-			resultat.next();
-		    
-		    // Insertion des valeurs récupérées dans la BDD lié au médicament
-		    Medicament medicament = new Medicament(resultat.getInt( "medicament_Id"));
-		  
-		    medicament.Produit = resultat.getString("produit");
-		    medicament.Quantite = resultat.getInt("quantite");
-		    medicament.FormeDosage = resultat.getString("forme_dosage");
-		    medicament.Lot = resultat.getString("lot");
-		    medicament.Dlu = resultat.getDate("dlu");
-		    medicament.Dotation = resultat.getString("dotation");
-		    medicament.Dci =  new DCIDAO().find(resultat.getShort("dci_id"));
-
+			if (resultat.next())
+			{
+			    // Insertion des valeurs récupérées dans la BDD lié au médicament
+			    med = new Medicament(resultat.getInt( "medicament_Id"));
+			  
+			    med.Produit = resultat.getString("produit");
+			    med.Quantite = resultat.getInt("quantite");
+			    med.FormeDosage = resultat.getString("forme_dosage");
+			    med.Lot = resultat.getString("lot");
+			    med.Dlu = resultat.getDate("dlu");
+			    med.Dotation = resultat.getString("dotation");
+			    med.Dci =  new DCIDAO().find(resultat.getShort("dci_id"));
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
