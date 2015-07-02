@@ -171,7 +171,7 @@ public class Fenetre {
 		jpnlHeader.add(btnOutil, gbc_btnOutil);
 		
 		JButton btnObjet = new JButton("Objets");
-		btnObjet.setIcon(new ImageIcon("./src/main/resources/com/projetGL/resources/icons32/objet.png"));
+		btnObjet.setIcon(new ImageIcon(this.getClass().getResource("/resources/icons32/objet.png")));
 		btnObjet.setToolTipText("Objets");
 		btnObjet.addMouseListener(new MouseAdapter() {
 			@Override

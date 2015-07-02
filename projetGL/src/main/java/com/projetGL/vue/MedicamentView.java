@@ -57,12 +57,12 @@ public class MedicamentView extends FenetreView {
 	    //Les titres des colonnes
 //	    String  title[] = {"Pseudo", "Age", "Taille"};
 //	    JTable tableau = new JTable(donnees, title);
-		String[] colonnes = {"Id", "Produit", "DCI", "DLU", "Dotation", "Forme Dosage"};
+		String[] colonnes = {"Id", "Produit", "Quantité",  "DLU", "Dotation", "Forme Dosage", "Lot", "DCI", "Classe Therapeutique" };
 		DefaultTableModel tableModel = new DefaultTableModel(colonnes, 0);
 		
 		//donnee = tableau de colis ? liste de colis ?
 		for (Medicament med : infosMedicament){
-				Object [] donnees = {med.Id, med.Produit, med.Dci.Designation, med.Dlu.toString(), med.Dotation, med.FormeDosage };  	
+				Object [] donnees = {med.Id, med.Produit, med.Quantite, med.Dlu.toString(), med.Dotation, med.FormeDosage, med.Lot, med.Dci.Designation, med.Dci.ClasseT.Designation };  	
 				//Object []  donnees = {"1", "Urologie", "Demi_Plein", "50", "DAC", "Option", "BAC"};
 				tableModel.addRow(donnees);
 			}
@@ -103,12 +103,18 @@ public class MedicamentView extends FenetreView {
 		});
 		jpnlBottom.add(btnAdd);
 			
-		btnModif = new JButton("Modifier");
+		/*btnModif = new JButton("Modifier");
 		btnModif.setToolTipText("Modifier");
-		jpnlBottom.add(btnModif);
+		jpnlBottom.add(btnModif);*/
 		
 		btnSuppr = new JButton("Supprimer");
 		btnSuppr.setToolTipText("Supprimer");
+		btnSuppr.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				DeleteMedicamentView vueDeleteMedoc = new DeleteMedicamentView();
+			}
+		});
 		jpnlBottom.add(btnSuppr);		
 		
 		return jpnlBottom;

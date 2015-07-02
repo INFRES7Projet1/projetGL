@@ -22,11 +22,15 @@ public class DeleteConfigurationView extends javax.swing.JFrame {
         initComponents();
         confdao = new ConfigurationColisDAO();
         List<ConfigurationColis> listconf;
-        listconf = confdao.findListe();
+        listconf = confdao.GetListeConfiguration();
         for(ConfigurationColis conf : listconf)
         {
             jComboBoxId.addItem(conf.Id);
         }
+        
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.setVisible(true);
     }
 
     /**
@@ -57,7 +61,7 @@ public class DeleteConfigurationView extends javax.swing.JFrame {
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel2.setText("Supprimer une configuration");
 
@@ -125,10 +129,11 @@ public class DeleteConfigurationView extends javax.swing.JFrame {
 
     private void jButtonSupprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSupprimerActionPerformed
         confdao = new ConfigurationColisDAO();
-        conf = new ConfigurationColis();
+        conf = new ConfigurationColis((Integer)jComboBoxId.getSelectedItem());
         
+        confdao.DeleteConfFromConfigurationColis(conf.Id);
         confdao.delete(conf);
-         this.dispose();
+        this.dispose();
     }//GEN-LAST:event_jButtonSupprimerActionPerformed
 
     private void jButtonAnnulerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnnulerActionPerformed

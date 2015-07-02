@@ -62,11 +62,11 @@ public class ColisView extends FenetreView {
 		infosColis = ctrllerColis.returnListe();
 
 	    //Les titres des colonnes
-		String[] colonnes = {"Id", "Designation", "Etat", "Poids", "Affectataire", "Option", "Type"};
+		String[] colonnes = {"Id", "Designation", "Etat", "Poids", "Affectataire", "Option", "Secteur", "Designation Générique", "Type", "Dimension"};
 		DefaultTableModel tableModel = new DefaultTableModel(colonnes, 0);
 		
 		for (Colis col : infosColis){
-				Object [] donnees = {col.Id, col.Designation, col.Etat.toString(), col.Poids, col.Affectataire, col.Option.Designation, col.Type.Designation};  	
+				Object [] donnees = {col.Id, col.Designation, col.Etat.toString(), col.Poids, col.Affectataire, col.Option.Designation, col.SecteurUtilisation.Designation , col.SecteurUtilisation.DesignationGenerique.Designation, col.Type.Designation, col.Type.GetDimension()};  	
 				tableModel.addRow(donnees);
 			}
 		tab = new JTable(tableModel);
@@ -108,12 +108,18 @@ public class ColisView extends FenetreView {
 		});
 		jpnlBottom.add(btnAdd);
 			
-		btnModif = new JButton("Modifier");
+		/*btnModif = new JButton("Modifier");
 		btnModif.setToolTipText("Modifier");
-		jpnlBottom.add(btnModif);
+		jpnlBottom.add(btnModif);*/
 		
 		btnSuppr = new JButton("Supprimer");
 		btnSuppr.setToolTipText("Supprimer");
+		btnSuppr.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				DeleteColisView vueSuppressionColis = new DeleteColisView();
+			}
+		});
 		jpnlBottom.add(btnSuppr);		
 		
 		return jpnlBottom;

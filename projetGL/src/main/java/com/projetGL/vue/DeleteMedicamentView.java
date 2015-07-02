@@ -5,7 +5,9 @@
  */
 package com.projetGL.vue;
 import com.projetGL.model.*;
+
 import static java.lang.Integer.*;
+
 import java.util.List;
 
 /**
@@ -28,6 +30,10 @@ public class DeleteMedicamentView extends javax.swing.JFrame {
         {
             jComboBoxId.addItem(medoc.Id);
         }
+        
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.setVisible(true);
     }
 
     /**
@@ -58,7 +64,7 @@ public class DeleteMedicamentView extends javax.swing.JFrame {
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel2.setText("Supprimer un colis");
 
@@ -126,11 +132,12 @@ public class DeleteMedicamentView extends javax.swing.JFrame {
 
     private void jButtonSupprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSupprimerActionPerformed
         medocdao = new MedicamentDAO();
-        medocs = new Medicament();
+        medocs = new Medicament((Integer)jComboBoxId.getSelectedItem());
         
         medocdao.DeleteMedicamentFromMedicamentColis(medocs.Id);
         medocdao.delete(medocs);
         this.dispose();
+
     }//GEN-LAST:event_jButtonSupprimerActionPerformed
 
     private void jButtonAnnulerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnnulerActionPerformed

@@ -27,6 +27,9 @@ public class DeleteOutilsView extends javax.swing.JFrame {
         {
             jComboBoxId.addItem(outil.Id);
         }
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.setVisible(true);
     }
 
     /**
@@ -57,7 +60,7 @@ public class DeleteOutilsView extends javax.swing.JFrame {
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel2.setText("Supprimer un outil");
 
@@ -126,7 +129,7 @@ public class DeleteOutilsView extends javax.swing.JFrame {
 
     private void jButtonSupprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSupprimerActionPerformed
         outilsdao = new OutilDAO();
-        outil = new Outil();
+        outil = new Outil((Integer)jComboBoxId.getSelectedItem());
         
         outilsdao.DeleteOutilFromOutilColis(outil.Id);
         outilsdao.delete(outil);

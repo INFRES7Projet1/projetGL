@@ -90,12 +90,18 @@ public class OutilView extends FenetreView {
 		});
 		jpnlBottom.add(btnAdd);
 			
-		btnModif = new JButton("Modifier");
+		/*btnModif = new JButton("Modifier");
 		btnModif.setToolTipText("Modifier");
-		jpnlBottom.add(btnModif);
+		jpnlBottom.add(btnModif);*/
 		
 		btnSuppr = new JButton("Supprimer");
 		btnSuppr.setToolTipText("Supprimer");
+		btnSuppr.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				DeleteOutilsView vueDeleteOutils = new DeleteOutilsView();
+			}
+		});
 		jpnlBottom.add(btnSuppr);		
 		
 		return jpnlBottom;

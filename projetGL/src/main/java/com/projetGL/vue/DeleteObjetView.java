@@ -27,6 +27,10 @@ public class DeleteObjetView extends javax.swing.JFrame {
         {
             jComboBoxId.addItem(objet.Id);
         }
+        
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.setVisible(true);
     }
 
     /**
@@ -57,7 +61,7 @@ public class DeleteObjetView extends javax.swing.JFrame {
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel2.setText("Supprimer un objet");
 
@@ -125,7 +129,7 @@ public class DeleteObjetView extends javax.swing.JFrame {
 
     private void jButtonSupprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSupprimerActionPerformed
         objetdao = new ObjetDAO();
-        objets = new Objet();
+        objets = new Objet((Integer)jComboBoxId.getSelectedItem());
         
         objetdao.DeleteObjetFromObjetColis(objets.Id);
         objetdao.delete(objets);

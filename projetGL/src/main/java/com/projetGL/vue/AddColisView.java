@@ -62,8 +62,9 @@ public class AddColisView extends javax.swing.JFrame {
         jComboBoxEtat.addItem("vide");
         jComboBoxEtat.addItem("demi_plein");
         jComboBoxEtat.addItem("plein");
-        
-        this.setSize(600, 400);
+
+        this.setLocationRelativeTo(null);
+        this.setSize(425, 400);
         this.setResizable(false);
         this.setVisible(true);
     }

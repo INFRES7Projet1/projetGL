@@ -24,10 +24,14 @@ public class DeleteColisView extends javax.swing.JFrame {
         colisdao = new ColisDAO();
         List<Colis> listcolis;
         listcolis = colisdao.findListe();
-        for(Colis coli : listcolis)
+        for(Colis colis : listcolis)
         {
-            jComboBoxId.addItem(coli.Id);
+            jComboBoxId.addItem(colis.Id);
         }
+        
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.setVisible(true);
     }
 
     /**
@@ -58,7 +62,7 @@ public class DeleteColisView extends javax.swing.JFrame {
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel2.setText("Supprimer un colis");
 
@@ -126,7 +130,7 @@ public class DeleteColisView extends javax.swing.JFrame {
 
     private void jButtonSupprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSupprimerActionPerformed
         colisdao = new ColisDAO();
-        colis = new Colis();
+        colis = new Colis((Integer)jComboBoxId.getSelectedItem());
         
         colisdao.DeleteColisFromConfigurationColis(colis.Id);
         colisdao.DeleteColisFromObjetColis(colis.Id);
