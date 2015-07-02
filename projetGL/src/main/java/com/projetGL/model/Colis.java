@@ -27,7 +27,7 @@ public class Colis {
 	public String Affectataire;
 	
 	// Etat courant du colis
-	public Status Etat;
+	public String Etat;
 	
 	// Option du colis
 	public OptionColis Option;
@@ -70,7 +70,7 @@ public class Colis {
 	}
 	
 	// Constructeur initialisant toute ses données membres
-	public Colis(int id, String designation, Status etat, int poids, String affectataire, OptionColis option, TypeColis type, Secteur secteur, List<Medicament> listeMedicaments, List<Outil> listeOutils, List<Objet> listeObjets)
+	public Colis(int id, String designation, String etat, int poids, String affectataire, OptionColis option, TypeColis type, Secteur secteur, List<Medicament> listeMedicaments, List<Outil> listeOutils, List<Objet> listeObjets)
 	{ 
 		Id = id;
 		Designation = designation;

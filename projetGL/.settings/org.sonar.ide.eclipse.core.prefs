@@ -1,6 +1,6 @@
 analyseLocally=false
 eclipse.preferences.version=1
-extraProperties=
+extraProperties=Projet-GL\=
 projectKey=projetGL\:projetGL
 serverUrl=http\://localhost\:9000
 version=2

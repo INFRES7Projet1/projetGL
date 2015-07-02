@@ -35,7 +35,7 @@ public class OutilDAO extends DAO<Outil> {
 			PreparedStatement statement = this.connect.prepareStatement(_insert);
 			statement.setString(1, outil.Designation);
 			statement.setInt(2, outil.Quantite);
-			statement.setDate(3, (java.sql.Date)outil.Dlu);
+			statement.setDate(3, new java.sql.Date( outil.Dlu.getTime()));
 			statement.setString(4, outil.Reference);
 			
 			if(statement.executeUpdate() != 0)

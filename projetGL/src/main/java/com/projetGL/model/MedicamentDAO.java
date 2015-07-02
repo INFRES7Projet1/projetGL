@@ -44,7 +44,7 @@ public class MedicamentDAO extends DAO<Medicament> {
 			statement.setString(1, medicament.Produit);
 			statement.setInt(2, medicament.Quantite);
 			statement.setString(3, medicament.FormeDosage);
-			statement.setDate(4, (java.sql.Date)medicament.Dlu);
+			statement.setDate(4, new java.sql.Date(medicament.Dlu.getTime()));
 			statement.setString(5, medicament.Dotation);
 			statement.setInt(6, medicament.Dci.Id);
 			

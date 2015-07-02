@@ -48,7 +48,8 @@ public class ColisDAO extends DAO<Colis> {
 				result = new Colis(colis_id);
 			    
 			    // Si etat = "Demi-Plein", on formate le string pour qu'il corresponde à la valeur d'enumération
-				result.Etat = Colis.Status.valueOf((resultat.getString( "etat" ) == "Demi-Plein" ? "DemiPlein" : resultat.getString( "etat" )));
+				//result.Etat = Colis.Status.valueOf((resultat.getString( "etat" ) == "Demi-Plein" ? "DemiPlein" : resultat.getString( "etat" )));
+				result.Etat = resultat.getString("etat");
 				result.Poids = resultat.getInt( "poids" );
 				result.Designation = resultat.getString( "designation" );
 				result.Affectataire = resultat.getString( "affectataire" );

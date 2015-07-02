@@ -2,90 +2,78 @@ package com.projetGL.vue;
 
 
 import javax.swing.JFrame;
-
-
 import java.awt.BorderLayout;
-
 import javax.swing.JLabel;
-
 import java.awt.Font;
-
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.FlowLayout;
-import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
 
-public class Fenetre {
+
+public class FenetreView {
 
 	protected JFrame frame = new JFrame(); //fenetre
 	protected JPanel jpnlHeader;			//menu 
 	protected JPanel jpnlContent; 			//tableau de donnees
-	protected JPanel jpnlBottom;    		//footer
+	protected JPanel jpnlInfoBottom;    		//footer
 
 	protected String _title = "ESCRIM Software";
 	
 	/**
 	 * Launch the application.
 	 */
-
-	
 	//Constructeur - creation Fenetre principale
-	public Fenetre() {
+	public FenetreView() {
 		initialize();
 	}
-
 	//Initialisation des composants de la vue d'accueil
 	protected void initialize() {
 //		frame = new JFrame();
 		//to specify the position and size of a GUI component 
-		frame.setSize(1024, 768);
+		frame.setSize(1024, 600);
 		frame.setTitle("ESCRIM Software");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(true);
+		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		//Recuperation des components dans des containers
-		jpnlBottom = getJpnlBottom();
+		jpnlInfoBottom = getjpnlInfoBottom();
 		jpnlHeader = getJpnlHeader(_title);
 		
 		//Frame - Ajout du header et du footer a  la frame
 		frame.getContentPane().add(jpnlHeader, BorderLayout.NORTH);
-		frame.getContentPane().add(jpnlBottom, BorderLayout.SOUTH);
-		
-/*		
-		//inserer le JTable dans un JScrollPane pour une meilleure visualisation des donnees
-//		jpnlContent.add(new JScrollPane(table));
-		jpnlContent.add(new JScrollPane(tableau));
-*/		
+		frame.getContentPane().add(jpnlInfoBottom, BorderLayout.SOUTH);
 		frame.setVisible(true);
 	}//initialize()
 	
 	protected JPanel getJpnlHeader(String title) {
-		//Header - Cr�ation du Layout associ�. 
+		//Header - Creation du Layout associee. 
 		GridBagLayout gbl_jpnlHeader = new GridBagLayout();
 		gbl_jpnlHeader.rowWeights = new double[]{0.0, 1.0};
 		gbl_jpnlHeader.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0};
 		jpnlHeader = new JPanel(gbl_jpnlHeader);
-		//Header - D�finition des contraintes du layout.
+		//Header - Definition des contraintes du layout.
 		GridBagConstraints gbc = new GridBagConstraints();
 			gbc.gridx = gbc.gridy = 0;
 			gbc.gridheight = gbc.gridwidth = 1;
-			//gbc.anchor = GridBagConstraints.FIRST_LINE_START;
 												
-		//Header - Cr�ation des composants de Header et des actions associees.
+		//Header - Creation des composants de Header et des actions associees.
 			//Creation des boutons.
 		JButton btnHome = new JButton("");
 		btnHome.setToolTipText("Home");
 		btnHome.setIcon(new ImageIcon("./src/main/resources/com/projetGL/resources/icons32/home.png"));;
+		btnHome.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				frame.setVisible(false);
+				FenetreView vueConf = new FenetreView();				
+			}
+		});
 		GridBagConstraints gbc_btnHome = new GridBagConstraints();
 			gbc_btnHome.insets = new Insets(0, 0, 5, 5);
 			gbc_btnHome.anchor = GridBagConstraints.FIRST_LINE_START;
@@ -113,8 +101,6 @@ public class Fenetre {
 		gbc_btnConf.gridy = 0;
 		jpnlHeader.add(btnConf, gbc_btnConf);
 		
-
-//MouseListener Colis		
 		JButton btnColis = new JButton("Colis");
 		btnColis.setIcon(new ImageIcon("./src/main/resources/com/projetGL/resources/icons32/colis.png"));
 		btnColis.setToolTipText("Colis");
@@ -134,9 +120,9 @@ public class Fenetre {
 		gbc_btnColis.gridy = 0;
 		jpnlHeader.add(btnColis, gbc_btnColis);
 		
-		JButton btnMedoc = new JButton("Médicaments");
+		JButton btnMedoc = new JButton("Medicaments");
 		btnMedoc.setIcon(new ImageIcon("./src/main/resources/com/projetGL/resources/icons32/medocs.png"));
-		btnMedoc.setToolTipText("Médicaments");
+		btnMedoc.setToolTipText("Medicaments");
 		btnMedoc.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -204,16 +190,18 @@ public class Fenetre {
 		return jpnlHeader;
 	}//getJpnlHeader()
 	
-	private JPanel getJpnlBottom() {
-		//Footer - D�finition du Jpanel, Layout et ajout a la frame
-		jpnlBottom = new JPanel();
-		
-		JButton btnContact= new JButton("Nous contacter");
-		jpnlBottom.add(btnContact);
+	private JPanel getjpnlInfoBottom() {
+		//Footer - D�finition du Jpanel, Layout et ajout a la frame
+		jpnlInfoBottom = new JPanel();
+		JButton btnContact= new JButton("Contact-Info");
+		jpnlInfoBottom.add(btnContact);
 		btnContact.setIcon(new ImageIcon("./src/main/resources/com/projetGL/resources/icons32/mail.png"));
-		return jpnlBottom;
+		btnContact.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				InfoView vueInfo = new InfoView();
+			}
+		});
+		return jpnlInfoBottom;
 	}//getJpnlBottom()
-	
-
-	
 } //Fenetre

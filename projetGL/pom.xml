@@ -4,6 +4,11 @@
   <artifactId>projetGL</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>projetGL</name>
+  <properties>
+  		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  		<sonar.host.url>http://localhost:9000/</sonar.host.url>
+  		<sonar.exclusions></sonar.exclusions>
+  	</properties>
   <dependencies>
   	<dependency>
   		<groupId>org.mockito</groupId>
